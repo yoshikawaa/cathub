@@ -1,0 +1,11 @@
+# maven
+target
+
+# sts
+.settings
+.classpath
+.project
+.springBeans
+
+# application settings
+application-proxy.yml

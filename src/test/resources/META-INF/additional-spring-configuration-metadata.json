@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "application.proxy.host",
+    "type": "java.lang.String",
+    "description": "A description for 'application.proxy.host'"
+  },
+  {
+    "name": "application.proxy.host",
+    "type": "java.lang.String",
+    "description": "A description for 'application.proxy.host'"
+  },
+  {
+    "name": "application.proxy.host",
+    "type": "java.lang.String",
+    "description": "A description for 'application.proxy.host'"
+  },
+  {
+    "name": "app",
+    "type": "java.lang.String",
+    "description": "A description for 'app'"
+  }
+]}

@@ -1,0 +1,23 @@
+# spring profile properties
+spring.profiles:
+  active: proxy
+
+# server properties
+server:
+  port: 9999
+  context-path: /cathub
+
+# spring mvc properties
+spring.mvc:
+  view.prefix: /
+  view.suffix: .jsp
+
+# logging properties
+logging.level:
+  com.example: DEBUG
+
+# api properties
+api:
+  github:
+    search:
+      issues: https://api.github.com/search/issues
