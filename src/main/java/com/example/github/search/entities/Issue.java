@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Issue {
+    @JsonProperty("repository_url")
+    private String repositoryUrl;
     @JsonProperty("html_url")
     private String htmlUrl;
     private Integer number;
@@ -17,8 +19,8 @@ public class Issue {
     private List<Label> labels;
     private String state;
     private List<Assignee> assignees;
-    @JsonProperty("repository_url")
-    private String repositoryUrl;
+    private Milestone milestone;
+    private Integer comments;
 
     public String getRepository() {
         String[] r = getRepositoryUrl().split("/");

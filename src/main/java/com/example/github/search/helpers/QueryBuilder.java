@@ -56,6 +56,10 @@ public class QueryBuilder {
         });
         return this;
     }
+    
+    public Boolean isEmpty() {
+        return queries.isEmpty();
+    }
 
     public String build() {
         return queries.stream().collect(Collectors.joining(QUERY_DELIMITER));

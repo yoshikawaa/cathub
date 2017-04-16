@@ -1,6 +1,6 @@
 # spring profile properties
 spring.profiles:
-  active: proxy
+  active: default
 
 # server properties
 server:

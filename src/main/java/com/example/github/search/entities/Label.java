@@ -9,4 +9,8 @@ public class Label {
     private String name;
     private String color;
     private String url;
+    
+    public String getColorCode() {
+        return "#" + color;
+    }
 }
