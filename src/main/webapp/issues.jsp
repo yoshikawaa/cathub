@@ -100,7 +100,7 @@
                   <i class="icon comments"></i>${issue.comments}</div>
               </td>
               <td><c:forEach var="label" items="${issue.labels}">
-                  <a class="ui tag label" style="background-color: ${label.colorCode}" href="${label.url}">${label.name}</a>
+                  <a class="ui tag label" style="background-color: ${label.colorCode}" href="${label.htmlUrl}">${label.name}</a>
                 </c:forEach></td>
               <td><c:set var="milestone" value="${issue.milestone}" /> <c:if test="${not empty issue.milestone}">
                   <i class="icon wait"></i>

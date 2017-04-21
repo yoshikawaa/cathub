@@ -13,4 +13,8 @@ public class Label {
     public String getColorCode() {
         return "#" + color;
     }
+    
+    public String getHtmlUrl() {
+        return url.replace("api.", "").replace("repos/", "");
+    }
 }
