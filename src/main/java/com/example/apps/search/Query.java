@@ -1,4 +1,6 @@
-package com.example.github.search;
+package com.example.apps.search;
+
+import com.example.core.validator.constraints.In;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Query {
-    
+    private String user;
+    private String repo;
     private String type;
     private String in;
     private String author;
@@ -22,6 +25,7 @@ public class Query {
     private String[] label;
     private String no;
     private String language;
+    @In({"open", "closed"})
     private String is;
 
     // for example <2012-10-01
@@ -33,7 +37,5 @@ public class Query {
     //private String status;
     //private String head;
     //private String base;
-    //private String user;
-    //private String repo;
     //private String project;
 }

@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Profile("default")
 @Configuration
-public class RestConfiguration {
+public class RestConfig {
 
     @Bean
     public RestTemplate restTemplate() {

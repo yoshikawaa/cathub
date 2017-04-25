@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Cathub</title>
+</head>
+<body>
+  <div layout:fragment="header" th:remove="tag"></div>
+  <div layout:fragment="contents" th:remove="tag"></div>
+  <div layout:fragment="scripts" th:remove="tag"></div>
+</body>
+</html>

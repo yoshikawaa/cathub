@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Profile("proxy")
 @Configuration
 @ConfigurationProperties(prefix = "proxy")
-public class RestConfigurationForProxy {
+public class RestConfigWithProxy {
 
     @Bean
     public HttpClientBuilder proxyHttpClientBuilder(@Value("${proxy.host}") String host,

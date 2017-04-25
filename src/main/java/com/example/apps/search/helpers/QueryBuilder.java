@@ -1,4 +1,4 @@
-package com.example.github.search.helpers;
+package com.example.apps.search.helpers;
 
 import java.util.ArrayList;
 import java.util.Arrays;

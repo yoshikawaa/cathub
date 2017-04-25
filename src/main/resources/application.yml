@@ -7,14 +7,15 @@ server:
   port: 9999
   context-path: /cathub
 
-# spring mvc properties
-spring.mvc:
-  view.prefix: /
-  view.suffix: .jsp
+# thymeleaf settings
+spring:
+  thymeleaf:
+    cache: false
 
 # logging properties
-logging.level:
-  com.example: DEBUG
+logging:
+  level:
+    com.example: DEBUG
 
 # api properties
 api:

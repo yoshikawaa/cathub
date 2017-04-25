@@ -1,4 +1,4 @@
-package com.example.github.search.entities;
+package com.example.apps.search.entities;
 
 import lombok.Getter;
 import lombok.Setter;
