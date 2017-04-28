@@ -9,58 +9,18 @@
       <i class="icon github"></i>Issues / Pull Requests
     </h1>
   </div>
+
   <div layout:fragment="contents">
     <button class="fluid ui button labeled icon primary modalable">
       <i class="icon search"></i>edit search condition
     </button>
-    <form th:action="@{/issues/search}" method="GET" th:object="${query}" class="ui fullscreen modal">
-      <div class="header">Please input search condition.</div>
-      <div class="content">
-        <div class="ui form">
-          <div class="fields">
-            <div class="field">
-              <label th:label="*{author}"> <i class="icon user"></i>author
-              </label> <input th:field="*{author}" placeholder="Please input author" /> <span
-                th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="negative"></span>
-            </div>
-            <div class="field">
-              <label th:label="*{assignee}"> <i class="icon user"></i>assignee
-              </label> <input th:field="*{assignee}" placeholder="Please input assignee" /> <span
-                th:if="${#fields.hasErrors('assignee')}" th:errors="*{assignee}" class="negative"></span>
-            </div>
-            <div class="field">
-              <label th:label="*{is}"> <i class="icon linkify"></i>is
-              </label> <select th:field="*{is}">
-                <option value="">---</option>
-                <option th:each="item : ${states}" th:value="${item}" th:text="${item}">is</option>
-              </select> <span th:if="${#fields.hasErrors('is')}" th:errors="*{is}" class="negative"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui buttons">
-          <button class="ui button labeled icon deny">
-            <i class="icon remove"></i>cancel
-          </button>
-          <div class="or"></div>
-          <button type="submit" class="ui button labeled icon primary">
-            <i class="icon search"></i>search
-          </button>
-        </div>
-      </div>
-    </form>
+    <div th:include="components/issues::modal"></div>
 
-    <script type="text/javascript">
-					$('.modalable').on('click', function() {
-						$('.ui.modal').modal('show');
-					});
-				</script>
 
     <div th:switch="${#lists.isEmpty(issues)}">
       <div th:case="true">
         <script type="text/javascript">
-									$('.ui.modal').modal('show');
+									$('.modalable').click();
 								</script>
       </div>
       <div th:case="*">
@@ -81,20 +41,29 @@
               <th>Assignees</th>
             </tr>
           </thead>
-          <tbody th:remove="all-but-first" th:each="issue : ${issues}">
+          <tbody th:each="issue : ${issues}" th:remove="all-but-first">
             <tr>
-              <td><div class="ui ribbon label">
+              <td>
+                <div class="ui ribbon label">
                   <a th:href="${issue.htmlUrl}" th:text="|${issue.repository}#${issue.number}|"></a>
-                </div></td>
-              <td><span th:text="${issue.title}"></span>
+                </div>
+              </td>
+              <td>
+                <span th:text="${issue.title}"></span>
                 <div class="ui label">
                   <i class="icon comments"></i><span th:text="${issue.comments}"></span>
-                </div></td>
-              <td><a th:each="label : ${issue.labels}" class="ui tag label"
-                th:style="|background-color: ${label.colorCode}|" th:href="${label.htmlUrl}" th:text="${label.name}"></a></td>
+                </div>
+              </td>
+              <td>
+                <div class="ui tag labels">
+                  <a class="ui label" th:each="label : ${issue.labels}"
+                    th:style="|background-color: ${label.colorCode}|" th:href="${label.htmlUrl}" th:text="${label.name}"></a>
+                </div>
+              </td>
               <td th:with="milestone=${issue.milestone}">
                 <div th:if="${milestone != null}">
-                  <i class="icon wait"></i> <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
+                  <i class="icon wait"></i>
+                  <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
                 </div>
               </td>
               <td>
@@ -113,7 +82,8 @@
               </td>
               <td>
                 <div th:each="assignee : ${issue.assignees}">
-                  <i class="icon user"></i> <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
+                  <i class="icon user"></i>
+                  <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
                 </div>
               </td>
             </tr>

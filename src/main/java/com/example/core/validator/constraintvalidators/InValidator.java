@@ -4,6 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import com.example.core.validator.constraints.In;
 
@@ -21,6 +22,10 @@ public class InValidator implements ConstraintValidator<In, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
+        if (StringUtils.isEmpty(value)) {
+            return true;
+        }
+
         return ObjectUtils.containsElement(this.candidates, value);
     }
 

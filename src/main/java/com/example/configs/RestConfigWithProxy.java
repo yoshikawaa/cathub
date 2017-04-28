@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @Profile("proxy")
@@ -23,15 +24,18 @@ public class RestConfigWithProxy {
             @Value("${proxy.port}") int port,
             @Value("${proxy.user}") String user,
             @Value("${proxy.password}") String password) {
-        HttpClientBuilder builder = HttpClientBuilder.create();
 
-        // set credential provider
-        BasicCredentialsProvider provider = new BasicCredentialsProvider();
-        provider.setCredentials(new AuthScope(host, port), new UsernamePasswordCredentials(user, password));
-        builder.setDefaultCredentialsProvider(provider);
+        HttpClientBuilder builder = HttpClientBuilder.create();
 
         // set proxy
         builder.setProxy(new HttpHost(host, port));
+
+        // set credential provider
+        if (!StringUtils.isEmpty(user) && !StringUtils.isEmpty(password)) {
+            BasicCredentialsProvider provider = new BasicCredentialsProvider();
+            provider.setCredentials(new AuthScope(host, port), new UsernamePasswordCredentials(user, password));
+            builder.setDefaultCredentialsProvider(provider);
+        }
 
         return builder;
     }

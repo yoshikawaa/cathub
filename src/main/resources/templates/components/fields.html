@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+  <div th:fragment="text (name, icon)" th:remove="tag">
+    <div class="field" th:classappend="${#fields.hasErrors('__${name}__')} ? error">
+      <label th:for="*{__${name}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${name}" th:remove="tag"></span>
+      </label> <input th:field="*{__${name}__}" th:placeholder="|Please input ${name}|" />
+      <div class="ui pointing red basic label" th:if="${#fields.hasErrors('__${name}__')}" th:errors="*{__${name}__}"></div>
+    </div>
+  </div>
+
+  <div th:fragment="select (name, items, icon)" th:remove="tag">
+    <div class="field" th:classappend="${#fields.hasErrors('__${name}__')} ? error">
+      <label th:for="*{__${name}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${name}" th:remove="tag"></span>
+      </label> <select th:field="*{__${name}__}">
+        <option value="">---</option>
+        <option th:each="item : ${__${items}__}" th:value="${item}" th:text="${item}"></option>
+      </select>
+      <div class="ui pointing red basic label" th:if="${#fields.hasErrors('__${name}__')}" th:errors="*{__${name}__}"></div>
+    </div>
+  </div>
+
+</body>
+</html>

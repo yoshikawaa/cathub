@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+
+  <div th:fragment="modal" th:remove="tag">
+    <form th:action="@{/issues/search}" method="GET" th:object="${query}" class="ui fullscreen modal">
+      <div class="header">Please input search condition.</div>
+      <div class="content">
+        <div class="ui form">
+          <h4 class="ui dividing header">Select Users</h4>
+          <div class="fields">
+            <div th:include="components/fields::text('author', 'user')"></div>
+            <div th:include="components/fields::text('assignee', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Select States</h4>
+          <div class="fields">
+            <div th:include="components/fields::select('is', 'states', 'linkify')"></div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui buttons">
+          <button type="reset" class="ui button labeled icon">
+            <i class="icon remove"></i>clear
+          </button>
+          <div class="or"></div>
+          <button type="submit" class="ui button labeled icon primary">
+            <i class="icon search"></i>search
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <script type="text/javascript">
+					$('.modalable').on('click', function() {
+						$('.ui.modal').modal('show');
+					});
+				</script>
+
+  </div>
+
+</body>
+</html>

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,12 +58,8 @@ public class IssueController {
             BindingResult result,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String order) {
-        if (result.hasErrors()) {
-            for (FieldError error : result.getFieldErrors()) {
-                log.warn("error {}:{}", error.getField(), error.getCode());
-            }
-            return index();
-        }
+
+        if (result.hasErrors()) { return index(); }
 
         QueryBuilder queries = new QueryBuilder(q);
 
@@ -86,6 +81,6 @@ public class IssueController {
             model.addAttribute("issues", issues);
         }
 
-        return "views/issues";
+        return index();
     }
 }
