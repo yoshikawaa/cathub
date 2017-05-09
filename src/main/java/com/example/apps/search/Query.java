@@ -11,22 +11,30 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Query {
+    // search by user & repository
     private String user;
     private String repo;
+    
+    // search by category
     private String type;
-    private String in;
+    private String[] label;
+
+    // search by user
     private String author;
     private String assignee;
     private String mentions;
     private String commenter;
     private String involves;
     private String team;
-    private String state;
-    private String[] label;
-    private String no;
-    private String language;
-    @In({"open", "closed"})
+
+    // select by state
+    @In({"open", "closed", "merged"})
     private String is;
+
+    // select by other conditions
+    @In({"title", "body", "comments"})
+    private String in;
+    private String value;
 
     // for example <2012-10-01
     private String created;
@@ -34,6 +42,8 @@ public class Query {
     private String merged;
     private String closed;
 
+    //private String no;
+    //private String language;
     //private String status;
     //private String head;
     //private String base;

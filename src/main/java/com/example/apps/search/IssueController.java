@@ -1,8 +1,6 @@
 package com.example.apps.search;
 
 import java.net.URI;
-import java.util.Comparator;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.apps.search.entities.Issue;
 import com.example.apps.search.entities.IssueResponse;
 import com.example.apps.search.helpers.QueryBuilder;
 
@@ -42,22 +39,21 @@ public class IssueController {
         return new Query();
     }
 
-    @ModelAttribute("states")
-    public String[] paramsIs() {
-        return new String[] { "open", "closed" };
+    @ModelAttribute
+    public Order order() {
+        return new Order();
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public String index() {
         return "views/issues";
     }
 
-    @RequestMapping(path = "search", method = RequestMethod.GET)
+    @PostMapping
     public String search(Model model,
             @Validated Query q,
-            BindingResult result,
-            @RequestParam(required = false) String sort,
-            @RequestParam(required = false) String order) {
+            @Validated Order o,
+            BindingResult result) {
 
         if (result.hasErrors()) { return index(); }
 
@@ -68,17 +64,14 @@ public class IssueController {
         } else {
             URI uri = UriComponentsBuilder.fromUriString(api)
                     .queryParam("q", queries.build())
-                    .queryParam("sort", sort)
-                    .queryParam("order", order)
+                    .queryParam("sort", o.getSort())
+                    .queryParam("order", o.getOrder())
                     .build()
                     .toUri();
             log.debug("rest operation for uri [{}]", uri.toString());
 
             ResponseEntity<IssueResponse> entity = rest.getForEntity(uri, IssueResponse.class);
-            List<Issue> issues = entity.getBody().getItems();
-            issues.sort(Comparator.comparing(Issue::getRepository).reversed());
-
-            model.addAttribute("issues", issues);
+            model.addAttribute("issues", entity.getBody().getItems());
         }
 
         return index();

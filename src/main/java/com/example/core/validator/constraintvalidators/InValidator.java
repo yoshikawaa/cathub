@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 
 import com.example.core.validator.constraints.In;
 
-public class InValidator implements ConstraintValidator<In, String> {
+public class InValidator implements ConstraintValidator<In, CharSequence> {
 
     private String[] candidates;
 
@@ -21,7 +21,7 @@ public class InValidator implements ConstraintValidator<In, String> {
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
         if (StringUtils.isEmpty(value)) {
             return true;
         }

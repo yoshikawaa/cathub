@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout">
 <head>
+<title>Issues / Pull Requests</title>
 </head>
 <body>
   <div layout:fragment="header" th:remove="tag">
@@ -17,7 +18,7 @@
     <div th:include="components/issues::modal"></div>
 
 
-    <div th:switch="${#lists.isEmpty(issues)}">
+    <div th:switch="${issues == null}">
       <div th:case="true">
         <script type="text/javascript">
 									$('.modalable').click();
@@ -30,7 +31,7 @@
           <p th:text="|Getting ${#lists.size(issues)} issues / pull requests.|"></p>
         </div>
 
-        <table class="ui celled table">
+        <table class="ui selectable celled table">
           <thead>
             <tr>
               <th>Repository/Issue No.</th>

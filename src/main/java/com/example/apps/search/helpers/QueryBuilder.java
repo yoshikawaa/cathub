@@ -34,7 +34,12 @@ public class QueryBuilder {
                 if (ObjectUtils.isArray(value)) {
                     addParameters(field.getName(), (Object[]) value);
                 } else {
-                    addParameter(field.getName(), value);
+                    String name = field.getName();
+                    if ("value".equals(name)) {
+                        addParameter(value);
+                    } else {
+                        addParameter(field.getName(), value);
+                    }
                 }
             }
         });
@@ -42,6 +47,11 @@ public class QueryBuilder {
 
     public QueryBuilder addParameter(String query) {
         queries.add(query);
+        return this;
+    }
+
+    public QueryBuilder addParameter(Object value) {
+        addParameter(value.toString());
         return this;
     }
 

@@ -5,25 +5,45 @@
 <body>
 
   <div th:fragment="modal" th:remove="tag">
-    <form th:action="@{/issues/search}" method="GET" th:object="${query}" class="ui fullscreen modal">
+    <form method="POST" th:object="${query}" class="ui fullscreen modal">
       <div class="header">Please input search condition.</div>
       <div class="content">
         <div class="ui form">
-          <h4 class="ui dividing header">Select Users</h4>
+          <h4 class="ui dividing header">Organization/Repository</h4>
+          <div class="fields">
+            <div th:include="components/fields::text('user', 'user')"></div>
+            <div th:include="components/fields::text('repo', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Users</h4>
           <div class="fields">
             <div th:include="components/fields::text('author', 'user')"></div>
             <div th:include="components/fields::text('assignee', 'user')"></div>
+            <div th:include="components/fields::text('mentions', 'user')"></div>
+            <div th:include="components/fields::text('commenter', 'user')"></div>
+            <div th:include="components/fields::text('involves', 'user')"></div>
+            <div th:include="components/fields::text('team', 'user')"></div>
           </div>
-          <h4 class="ui dividing header">Select States</h4>
+          <h4 class="ui dividing header">Categories/States</h4>
           <div class="fields">
-            <div th:include="components/fields::select('is', 'states', 'linkify')"></div>
+            <div th:include="components/fields::select('type', '@type', 'linkify')"></div>
+            <div th:include="components/fields::text('label', 'user')"></div>
+            <div th:include="components/fields::select('is', '@is', 'linkify')"></div>
+          </div>
+          <div class="fields">
+            <div th:include="components/fields::select('in', '@in', 'linkify')"></div>
+            <div th:include="components/fields::text('value', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Order Results</h4>
+          <div class="fields" th:object="${order}">
+            <div th:include="components/fields::select('sort', '@sort', 'linkify')"></div>
+            <div th:include="components/fields::select('order', '@order', 'linkify')"></div>
           </div>
         </div>
       </div>
       <div class="actions">
         <div class="ui buttons">
           <button type="reset" class="ui button labeled icon">
-            <i class="icon remove"></i>clear
+            <i class="icon remove"></i>reset
           </button>
           <div class="or"></div>
           <button type="submit" class="ui button labeled icon primary">
