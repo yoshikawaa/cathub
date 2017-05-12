@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.ApplicationScope;
 
 @Configuration
-public class ApplicationConfig {
+public class ValueConfig {
+
     @ApplicationScope
     @Bean("type")
     public List<String> type() {
@@ -18,6 +19,11 @@ public class ApplicationConfig {
     @Bean("is")
     public List<String> is() {
         return Arrays.asList("open", "closed", "merged");
+    }
+    @ApplicationScope
+    @Bean("review")
+    public List<String> review() {
+        return Arrays.asList("none", "required", "approved", "changes_requested");
     }
     @ApplicationScope
     @Bean("in")

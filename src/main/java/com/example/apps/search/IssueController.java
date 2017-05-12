@@ -57,7 +57,7 @@ public class IssueController {
 
         if (result.hasErrors()) { return index(); }
 
-        QueryBuilder queries = new QueryBuilder(q);
+        QueryBuilder queries = QueryBuilder.fromQuery(q);
 
         if (queries.isEmpty()) {
             log.debug("queries is empty, skip rest operation.");

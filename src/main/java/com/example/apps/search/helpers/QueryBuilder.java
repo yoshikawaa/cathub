@@ -8,6 +8,11 @@ import java.util.stream.Stream;
 
 import org.springframework.util.ObjectUtils;
 
+import com.example.apps.search.helpers.annotation.QueryParam;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class QueryBuilder {
 
     private static final String QUERY_DELIMITER = "+";
@@ -15,58 +20,75 @@ public class QueryBuilder {
 
     private List<String> queries = new ArrayList<String>();
 
-    public QueryBuilder() {
-    }
-
-    public QueryBuilder(Object query) {
+    public static QueryBuilder fromQuery(Object query) {
+        QueryBuilder builder = new QueryBuilder();
         Arrays.stream(query.getClass().getDeclaredFields()).forEach(field -> {
             // get query parameter(s)
+            QueryParam q = field.getAnnotation(QueryParam.class);
             Object value = null;
             try {
                 field.setAccessible(true);
                 value = field.get(query);
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                log.trace("building query is failed.", e);
+            }
+
+            // ignore empty parameter(s)
+            if (ObjectUtils.isEmpty(value)) {
+                return;
             }
 
             // set query parameter(s)
-            if (!ObjectUtils.isEmpty(value)) {
-                if (ObjectUtils.isArray(value)) {
-                    addParameters(field.getName(), (Object[]) value);
-                } else {
-                    String name = field.getName();
-                    if ("value".equals(name)) {
-                        addParameter(value);
+            if (ObjectUtils.isArray(value)) {
+                Object[] values = (Object[]) value;
+                if (q != null) {
+                    if (q.requiredValue()) {
+                        builder.addParameters(q.name(), values);
                     } else {
-                        addParameter(field.getName(), value);
+                        builder.addParameters(values);
                     }
+                } else {
+                    builder.addParameters(field.getName(), values);
+                }
+            } else {
+                if (q != null) {
+                    if (q.requiredValue()) {
+                        builder.addParameter(q.name(), value);
+                    } else {
+                        builder.addParameter(value);
+                    }
+                } else {
+                    builder.addParameter(field.getName(), value);
                 }
             }
         });
+        return builder;
     }
 
-    public QueryBuilder addParameter(String query) {
-        queries.add(query);
+    public QueryBuilder addParameter(Object name) {
+        queries.add(name.toString());
         return this;
     }
 
-    public QueryBuilder addParameter(Object value) {
-        addParameter(value.toString());
+    public QueryBuilder addParameter(String name, Object value) {
+        queries.add(name + KEY_VALUE_DELIMITER + value.toString());
         return this;
     }
 
-    public QueryBuilder addParameter(String query, Object value) {
-        queries.add(query + KEY_VALUE_DELIMITER + value.toString());
-        return this;
-    }
-
-    public QueryBuilder addParameters(String query, Object[] values) {
-        Stream.of(values).forEach(value -> {
-            queries.add(query + KEY_VALUE_DELIMITER + value.toString());
+    public QueryBuilder addParameters(Object[] names) {
+        Stream.of(names).forEach(name -> {
+            addParameter(name);
         });
         return this;
     }
-    
+
+    public QueryBuilder addParameters(String name, Object[] values) {
+        Stream.of(values).forEach(value -> {
+            addParameter(name, value);
+        });
+        return this;
+    }
+
     public Boolean isEmpty() {
         return queries.isEmpty();
     }

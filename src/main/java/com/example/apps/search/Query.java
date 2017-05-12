@@ -1,5 +1,6 @@
 package com.example.apps.search;
 
+import com.example.apps.search.helpers.annotation.QueryParam;
 import com.example.core.validator.constraints.In;
 
 import lombok.Getter;
@@ -25,15 +26,22 @@ public class Query {
     private String mentions;
     private String commenter;
     private String involves;
+    @QueryParam(name = "reviewed-by")
+    private String reviewedBy;
+    @QueryParam(name = "review-requested")
+    private String reviewRequested;
     private String team;
 
     // select by state
     @In({"open", "closed", "merged"})
     private String is;
+    @In({"none", "required", "approved", "changes_requested"})
+    private String review;
 
     // select by other conditions
     @In({"title", "body", "comments"})
     private String in;
+    @QueryParam(requiredValue = false)
     private String value;
 
     // for example <2012-10-01

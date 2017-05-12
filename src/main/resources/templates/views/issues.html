@@ -5,24 +5,75 @@
 <title>Issues / Pull Requests</title>
 </head>
 <body>
-  <div layout:fragment="header" th:remove="tag">
-    <h1>
-      <i class="icon github"></i>Issues / Pull Requests
-    </h1>
-  </div>
+  <div layout:fragment="header">Browse Issues &amp; Pull Requests</div>
 
   <div layout:fragment="contents">
     <button class="fluid ui button labeled icon primary modalable">
       <i class="icon search"></i>edit search condition
     </button>
-    <div th:include="components/issues::modal"></div>
+    <form method="POST" th:object="${query}" class="ui fullscreen modal">
+      <div class="header">Please input search condition.</div>
+      <div class="content">
+        <div class="ui form">
+          <h4 class="ui dividing header">Organization/Repository</h4>
+          <div class="fields">
+            <div th:include="components/fields::text('user', 'user')"></div>
+            <div th:include="components/fields::text('repo', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Users</h4>
+          <div class="fields">
+            <div th:include="components/fields::text('author', 'user')"></div>
+            <div th:include="components/fields::text('assignee', 'user')"></div>
+            <div th:include="components/fields::text('mentions', 'user')"></div>
+            <div th:include="components/fields::text('commenter', 'user')"></div>
+            <div th:include="components/fields::text('involves', 'user')"></div>
+            <div th:include="components/fields::text('reviewedBy', 'user')"></div>
+            <div th:include="components/fields::text('reviewRequested', 'user')"></div>
+            <div th:include="components/fields::text('team', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Categories/States</h4>
+          <div class="fields">
+            <div th:include="components/fields::select('type', '@type', 'linkify')"></div>
+            <div th:include="components/fields::text('label', 'user')"></div>
+            <div th:include="components/fields::select('is', '@is', 'linkify')"></div>
+            <div th:include="components/fields::select('review', '@review', 'linkify')"></div>
+          </div>
+          <div class="fields">
+            <div th:include="components/fields::select('in', '@in', 'linkify')"></div>
+            <div th:include="components/fields::text('value', 'user')"></div>
+          </div>
+          <h4 class="ui dividing header">Order Results</h4>
+          <div class="fields" th:object="${order}">
+            <div th:include="components/fields::select('sort', '@sort', 'linkify')"></div>
+            <div th:include="components/fields::select('order', '@order', 'linkify')"></div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui buttons">
+          <button type="reset" class="ui button labeled icon">
+            <i class="icon remove"></i>reset
+          </button>
+          <div class="or"></div>
+          <button type="submit" class="ui button labeled icon primary">
+            <i class="icon search"></i>search
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <script type="text/javascript">
+          $('.modalable').on('click', function() {
+            $('.ui.modal').modal('setting', 'transition', 'slide down').modal('show');
+          });
+        </script>
 
 
     <div th:switch="${issues == null}">
       <div th:case="true">
         <script type="text/javascript">
-									$('.modalable').click();
-								</script>
+                  $('.modalable').click();
+                </script>
       </div>
       <div th:case="*">
         <div class="ui message positive">
@@ -49,12 +100,10 @@
                   <a th:href="${issue.htmlUrl}" th:text="|${issue.repository}#${issue.number}|"></a>
                 </div>
               </td>
-              <td>
-                <span th:text="${issue.title}"></span>
+              <td><span th:text="${issue.title}"></span>
                 <div class="ui label">
                   <i class="icon comments"></i><span th:text="${issue.comments}"></span>
-                </div>
-              </td>
+                </div></td>
               <td>
                 <div class="ui tag labels">
                   <a class="ui label" th:each="label : ${issue.labels}"
@@ -92,17 +141,12 @@
         </table>
 
         <script type="text/javascript">
-									$('.message .close').on(
-											'click',
-											function() {
-												$(this).closest('.message')
-														.transition('fade');
-											});
-								</script>
+                  $('.message .close').on('click', function() {
+                    $(this).closest('.message').transition('fade');
+                  });
+                </script>
       </div>
     </div>
   </div>
-  s
-  <div layout:fragment="scripts"></div>
 </body>
 </html>
