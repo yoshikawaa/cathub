@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="layout">
+<head>
+<title>Settings</title>
+</head>
+<body>
+  <div layout:fragment="header">Settings</div>
+
+  <div layout:fragment="contents">
+
+    <form method="POST" class="ui form" th:object="${settings}">
+      <h4 class="ui dividing header">User Accont</h4>
+      <div th:include="components/fields::text('user', 'user')"></div>
+      <div th:include="components/fields::password('pass', 'user')"></div>
+      <h4 class="ui dividing header">Default Organization &amp; Repository</h4>
+      <div th:include="components/fields::text('org', 'user')"></div>
+      <div th:include="components/fields::text('repo', 'user')"></div>
+      <button type="submit" class="ui button fluid labeled icon primary">
+        <i class="icon save"></i>save settings
+      </button>
+    </form>
+
+  </div>
+
+</body>
+</html>

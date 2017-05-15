@@ -12,6 +12,14 @@
     </div>
   </div>
 
+  <div th:fragment="password (name, icon)" th:remove="tag">
+    <div class="field" th:classappend="${#fields.hasErrors('__${name}__')} ? error">
+      <label th:for="*{__${name}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${name}" th:remove="tag"></span>
+      </label> <input type="password" th:field="*{__${name}__}" th:placeholder="|Please input ${name}|" />
+      <div class="ui pointing red basic label" th:if="${#fields.hasErrors('__${name}__')}" th:errors="*{__${name}__}"></div>
+    </div>
+  </div>
+
   <div th:fragment="select (name, items, icon)" th:remove="tag">
     <div class="field" th:classappend="${#fields.hasErrors('__${name}__')} ? error">
       <label th:for="*{__${name}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${name}" th:remove="tag"></span>

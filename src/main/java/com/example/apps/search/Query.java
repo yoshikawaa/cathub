@@ -13,7 +13,8 @@ import lombok.Setter;
 @Setter
 public class Query {
     // search by user & repository
-    private String user;
+    @QueryParam(name = "user")
+    private String org;
     private String repo;
     
     // search by category

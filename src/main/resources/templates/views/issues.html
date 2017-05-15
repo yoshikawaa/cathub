@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout">
 <head>
-<title>Issues / Pull Requests</title>
+<title>Browse Issues &amp; Pull Requests</title>
 </head>
 <body>
   <div layout:fragment="header">Browse Issues &amp; Pull Requests</div>
 
   <div layout:fragment="contents">
-    <button class="fluid ui button labeled icon primary modalable">
+    <button class="ui button fluid labeled icon primary modalable">
       <i class="icon search"></i>edit search condition
     </button>
     <form method="POST" th:object="${query}" class="ui fullscreen modal">
@@ -17,7 +17,7 @@
         <div class="ui form">
           <h4 class="ui dividing header">Organization/Repository</h4>
           <div class="fields">
-            <div th:include="components/fields::text('user', 'user')"></div>
+            <div th:include="components/fields::text('org', 'user')"></div>
             <div th:include="components/fields::text('repo', 'user')"></div>
           </div>
           <h4 class="ui dividing header">Users</h4>
