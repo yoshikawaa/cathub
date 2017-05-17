@@ -1,4 +1,4 @@
-package com.example.core.validator.constraintvalidators;
+package com.example.core.validation.constraintvalidators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import com.example.core.validator.constraints.In;
+import com.example.core.validation.constraints.In;
 
 public class InValidator implements ConstraintValidator<In, CharSequence> {
 

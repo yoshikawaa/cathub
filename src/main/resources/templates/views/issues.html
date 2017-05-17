@@ -8,10 +8,12 @@
   <div layout:fragment="header">Browse Issues &amp; Pull Requests</div>
 
   <div layout:fragment="contents">
+
     <button class="ui button fluid labeled icon primary modalable">
       <i class="icon search"></i>edit search condition
     </button>
-    <form method="POST" th:object="${query}" class="ui fullscreen modal">
+
+    <form method="POST" th:action="@{/issues}" th:object="${query}" class="ui fullscreen modal">
       <div class="header">Please input search condition.</div>
       <div class="content">
         <div class="ui form">
@@ -63,11 +65,13 @@
     </form>
 
     <script type="text/javascript">
-          $('.modalable').on('click', function() {
-            $('.ui.modal').modal('setting', 'transition', 'slide down').modal('show');
-          });
+          $('.modalable').on(
+              'click',
+              function() {
+                $('.ui.modal').modal('setting', 'transition', 'slide down')
+                    .modal('show');
+              });
         </script>
-
 
     <div th:switch="${issues == null}">
       <div th:case="true">
@@ -85,8 +89,7 @@
         <table class="ui selectable celled table">
           <thead>
             <tr>
-              <th>Repository/Issue No.</th>
-              <th>Title</th>
+              <th>Issue</th>
               <th>Labels</th>
               <th>Milestone</th>
               <th>State</th>
@@ -95,15 +98,15 @@
           </thead>
           <tbody th:each="issue : ${issues}" th:remove="all-but-first">
             <tr>
-              <td>
-                <div class="ui ribbon label">
-                  <a th:href="${issue.htmlUrl}" th:text="|${issue.repository}#${issue.number}|"></a>
-                </div>
-              </td>
-              <td><span th:text="${issue.title}"></span>
-                <div class="ui label">
-                  <i class="icon comments"></i><span th:text="${issue.comments}"></span>
-                </div></td>
+              <td><a th:href="${issue.htmlUrl}">
+                  <div class="ui ribbon label">
+                    <span th:text="|${issue.repository}#${issue.number}|"></span>
+                  </div>
+                  <span th:text="${issue.title}"></span>
+                  <div class="ui label">
+                    <i class="icon comments"></i><span th:text="${issue.comments}"></span>
+                  </div>
+                </a></td>
               <td>
                 <div class="ui tag labels">
                   <a class="ui label" th:each="label : ${issue.labels}"

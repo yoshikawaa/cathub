@@ -30,10 +30,10 @@ public class SearchService {
 
     public IssueResponse getIssues(Query q, Order o) {
 
-        QueryBuilder queries = QueryBuilder.fromQuery(q);
+        QueryBuilder queries = QueryBuilder.from(q);
 
         IssueResponse response = null;
-        
+
         if (queries.isEmpty()) {
             log.debug("queries is empty, skip rest operation.");
         } else {
@@ -49,7 +49,7 @@ public class SearchService {
 
             response = entity.getBody();
         }
-        
+
         return response;
     }
 }

@@ -1,22 +1,21 @@
 package com.example.apps.settings;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
 
+import com.example.core.validation.groups.Save;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@Component
-@SessionScope
+@NoArgsConstructor
+@AllArgsConstructor
 public class Settings {
-    @NotBlank
+    @NotBlank(groups = Save.class)
     private String user;
     private String pass;
     private String org;
-    private String repo;
 }

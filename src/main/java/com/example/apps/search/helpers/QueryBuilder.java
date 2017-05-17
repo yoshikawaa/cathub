@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import com.example.apps.search.helpers.annotation.QueryParam;
 
@@ -18,18 +19,19 @@ public class QueryBuilder {
     private static final String QUERY_DELIMITER = "+";
     private static final String KEY_VALUE_DELIMITER = ":";
 
-    private List<String> queries = new ArrayList<String>();
+    private final List<String> queries = new ArrayList<String>();
 
-    public static QueryBuilder fromQuery(Object query) {
+    public static QueryBuilder from(Object obj) {
         QueryBuilder builder = new QueryBuilder();
-        Arrays.stream(query.getClass().getDeclaredFields()).forEach(field -> {
+        Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
             // get query parameter(s)
-            QueryParam q = field.getAnnotation(QueryParam.class);
+            QueryParam query = field.getDeclaredAnnotation(QueryParam.class);
+            String name = (query != null && !StringUtils.isEmpty(query.name())) ? query.name() : field.getName();
             Object value = null;
             try {
                 field.setAccessible(true);
-                value = field.get(query);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
+                value = field.get(obj);
+            } catch (IllegalAccessException | IllegalArgumentException e) {
                 log.trace("building query is failed.", e);
             }
 
@@ -41,24 +43,24 @@ public class QueryBuilder {
             // set query parameter(s)
             if (ObjectUtils.isArray(value)) {
                 Object[] values = (Object[]) value;
-                if (q != null) {
-                    if (q.requiredValue()) {
-                        builder.addParameters(q.name(), values);
+                if (query != null) {
+                    if (query.requiredValue()) {
+                        builder.addParameters(name, values);
                     } else {
                         builder.addParameters(values);
                     }
                 } else {
-                    builder.addParameters(field.getName(), values);
+                    builder.addParameters(name, values);
                 }
             } else {
-                if (q != null) {
-                    if (q.requiredValue()) {
-                        builder.addParameter(q.name(), value);
+                if (query != null) {
+                    if (query.requiredValue()) {
+                        builder.addParameter(name, value);
                     } else {
                         builder.addParameter(value);
                     }
                 } else {
-                    builder.addParameter(field.getName(), value);
+                    builder.addParameter(name, value);
                 }
             }
         });

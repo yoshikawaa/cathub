@@ -1,4 +1,4 @@
-package com.example.core.validator.constraints;
+package com.example.core.validation.constraints;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.example.core.validator.constraintvalidators.InValidator;
+import com.example.core.validation.constraintvalidators.InValidator;
 
 @Documented
 @Constraint(validatedBy = { InValidator.class })

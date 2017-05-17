@@ -1,6 +1,6 @@
 package com.example.apps.search;
 
-import com.example.core.validator.constraints.In;
+import com.example.core.validation.constraints.In;
 
 import lombok.Getter;
 import lombok.Setter;
