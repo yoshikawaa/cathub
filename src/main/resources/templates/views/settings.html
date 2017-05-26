@@ -29,11 +29,11 @@
     <form method="POST" class="ui form" th:object="${settings}">
 
       <h4 class="ui dividing header">User Accont</h4>
-      <div th:include="components/fields::text('user', 'user')"></div>
-      <div th:include="components/fields::password('pass', 'user')"></div>
+      <div th:include="components/fields::text('user', 'user')" th:remove="tag"></div>
+      <div th:include="components/fields::password('pass', 'user')" th:remove="tag"></div>
 
       <h4 class="ui dividing header">Default Organization &amp; Repository</h4>
-      <div th:include="components/fields::text('org', 'user')"></div>
+      <div th:include="components/fields::text('org', 'user')" th:remove="tag"></div>
 
       <div class="ui fluid buttons">
         <button type="submit" name="clear" class="ui button labeled icon">

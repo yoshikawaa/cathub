@@ -44,9 +44,9 @@ public class IssueController {
     }
 
     @PostMapping
-    public String search(Model model, @Validated Query q, @Validated Order o, BindingResult result) {
+    public String search(Model model, @Validated Query q, BindingResult qResult, @Validated Order o, BindingResult oResult) {
 
-        if (result.hasErrors()) {
+        if (qResult.hasErrors() || oResult.hasErrors()) {
             return view();
         }
 

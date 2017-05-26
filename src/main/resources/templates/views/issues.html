@@ -18,48 +18,48 @@
       <div class="content">
         <div class="ui form">
           <h4 class="ui dividing header">Organization/Repository</h4>
-          <div class="fields">
-            <div th:include="components/fields::text('org', 'user')"></div>
-            <div th:include="components/fields::text('repo', 'user')"></div>
+          <div class="four fields">
+            <div th:include="components/fields::text('org', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('repo', 'user')" th:remove="tag"></div>
           </div>
           <h4 class="ui dividing header">Users</h4>
-          <div class="fields">
-            <div th:include="components/fields::text('author', 'user')"></div>
-            <div th:include="components/fields::text('assignee', 'user')"></div>
-            <div th:include="components/fields::text('mentions', 'user')"></div>
-            <div th:include="components/fields::text('commenter', 'user')"></div>
-            <div th:include="components/fields::text('involves', 'user')"></div>
-            <div th:include="components/fields::text('reviewedBy', 'user')"></div>
-            <div th:include="components/fields::text('reviewRequested', 'user')"></div>
-            <div th:include="components/fields::text('team', 'user')"></div>
+          <div class="four fields">
+            <div th:include="components/fields::text('author', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('assignee', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('mentions', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('commenter', 'user')" th:remove="tag"></div>
+          </div>
+          <div class="four fields">
+            <div th:include="components/fields::text('involves', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('reviewedBy', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('reviewRequested', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::text('team', 'user')" th:remove="tag"></div>
           </div>
           <h4 class="ui dividing header">Categories/States</h4>
-          <div class="fields">
-            <div th:include="components/fields::select('type', '@type', 'linkify')"></div>
-            <div th:include="components/fields::text('label', 'user')"></div>
-            <div th:include="components/fields::select('is', '@is', 'linkify')"></div>
-            <div th:include="components/fields::select('review', '@review', 'linkify')"></div>
+          <div class="four fields">
+            <div th:include="components/fields::select('type', '@type', 'linkify')" th:remove="tag"></div>
+            <div th:include="components/fields::text('label', 'user')" th:remove="tag"></div>
+            <div th:include="components/fields::select('is', '@is', 'linkify')" th:remove="tag"></div>
+            <div th:include="components/fields::select('review', '@review', 'linkify')" th:remove="tag"></div>
           </div>
-          <div class="fields">
-            <div th:include="components/fields::select('in', '@in', 'linkify')"></div>
-            <div th:include="components/fields::text('value', 'user')"></div>
+          <div class="four fields">
+            <div th:include="components/fields::select('in', '@in', 'linkify')" th:remove="tag"></div>
+            <div th:include="components/fields::text('value', 'user')" th:remove="tag"></div>
           </div>
           <h4 class="ui dividing header">Order Results</h4>
-          <div class="fields" th:object="${order}">
-            <div th:include="components/fields::select('sort', '@sort', 'linkify')"></div>
-            <div th:include="components/fields::select('order', '@order', 'linkify')"></div>
+          <div class="four fields" th:object="${order}">
+            <div th:include="components/fields::select('sort', '@sort', 'linkify')" th:remove="tag"></div>
+            <div th:include="components/fields::select('order', '@order', 'linkify')" th:remove="tag"></div>
           </div>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui buttons">
-          <button type="reset" class="ui button labeled icon">
-            <i class="icon remove"></i>reset
-          </button>
-          <div class="or"></div>
-          <button type="submit" class="ui button labeled icon primary">
-            <i class="icon search"></i>search
-          </button>
+          <div class="ui fluid buttons">
+            <button type="reset" class="ui button labeled icon">
+              <i class="icon remove"></i>reset
+            </button>
+            <div class="or"></div>
+            <button type="submit" class="ui button labeled icon primary">
+              <i class="icon search"></i>search
+            </button>
+          </div>
         </div>
       </div>
     </form>
@@ -71,6 +71,9 @@
                 $('.ui.modal').modal('setting', 'transition', 'slide down')
                     .modal('show');
               });
+          $('button[type="submit"]').on('click', function() {
+            $('.form').addClass("loading");
+          });
         </script>
 
     <div th:switch="${issues == null}">
