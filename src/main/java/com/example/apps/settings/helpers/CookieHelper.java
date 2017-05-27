@@ -6,9 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.util.CookieGenerator;
 
-import lombok.extern.slf4j.Slf4j;
+import com.example.core.exception.SystemException;
 
-@Slf4j
 public class CookieHelper extends CookieGenerator {
 
     public static void addCookie(HttpServletResponse response, String name, String value) {
@@ -29,7 +28,7 @@ public class CookieHelper extends CookieGenerator {
                 field.setAccessible(true);
                 addCookie(response, prefix + "." + field.getName(), field.get(obj).toString());
             } catch (IllegalAccessException | IllegalArgumentException e) {
-                log.trace("building cookie is failed.", e);
+                throw new SystemException("failed to build cookie.", e);
             }
         });
     }

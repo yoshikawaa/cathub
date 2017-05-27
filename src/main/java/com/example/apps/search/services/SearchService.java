@@ -5,6 +5,8 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
@@ -12,8 +14,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.apps.search.Order;
 import com.example.apps.search.Query;
-import com.example.apps.search.entities.IssueResponse;
+import com.example.apps.search.entities.Issue;
 import com.example.apps.search.helpers.QueryBuilder;
+import com.example.core.data.domain.PageRangeImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,28 +31,28 @@ public class SearchService {
     @Value("${api.github.search.issues}")
     String api;
 
-    public IssueResponse getIssues(Query q, Order o) {
+    public Page<Issue> getIssues(Query q, Order o, Pageable pageable) {
 
         QueryBuilder queries = QueryBuilder.from(q);
 
-        IssueResponse response = null;
-
         if (queries.isEmpty()) {
             log.debug("queries is empty, skip rest operation.");
-        } else {
-            URI uri = UriComponentsBuilder.fromUriString(api)
-                    .queryParam("q", queries.build())
-                    .queryParam("sort", o.getSort())
-                    .queryParam("order", o.getOrder())
-                    .build()
-                    .toUri();
-            log.debug("rest operation for uri [{}]", uri.toString());
-
-            ResponseEntity<IssueResponse> entity = rest.getForEntity(uri, IssueResponse.class);
-
-            response = entity.getBody();
+            return null;
         }
 
-        return response;
+        URI uri = UriComponentsBuilder.fromUriString(api)
+                .queryParam("q", queries.build())
+                .queryParam("sort", o.getSort())
+                .queryParam("order", o.getOrder())
+                .queryParam("page", pageable.getPageNumber() + 1)
+                .queryParam("per_page", pageable.getPageSize())
+                .build()
+                .toUri();
+        log.debug("rest operation for uri [{}]", uri.toString());
+
+        ResponseEntity<Issues> entity = rest.getForEntity(uri, Issues.class);
+        Issues body = entity.getBody();
+
+        return new PageRangeImpl<Issue>(body.getItems(), pageable, body.getTotalCount());
     }
 }

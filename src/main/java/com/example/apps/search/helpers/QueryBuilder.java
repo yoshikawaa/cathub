@@ -10,10 +10,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import com.example.apps.search.helpers.annotation.QueryParam;
+import com.example.core.exception.SystemException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class QueryBuilder {
 
     private static final String QUERY_DELIMITER = "+";
@@ -32,33 +30,25 @@ public class QueryBuilder {
                 field.setAccessible(true);
                 value = field.get(obj);
             } catch (IllegalAccessException | IllegalArgumentException e) {
-                log.trace("building query is failed.", e);
+                throw new SystemException("failed to build query.", e);
             }
 
             // ignore empty parameter(s)
-            if (ObjectUtils.isEmpty(value)) {
+            if (ObjectUtils.isEmpty(value) || (ObjectUtils.isArray(value) && ObjectUtils.isEmpty((Object[]) value))) {
                 return;
             }
 
             // set query parameter(s)
             if (ObjectUtils.isArray(value)) {
                 Object[] values = (Object[]) value;
-                if (query != null) {
-                    if (query.requiredValue()) {
-                        builder.addParameters(name, values);
-                    } else {
-                        builder.addParameters(values);
-                    }
+                if (query != null && !query.requiredValue()) {
+                    builder.addParameters(values);
                 } else {
                     builder.addParameters(name, values);
                 }
             } else {
-                if (query != null) {
-                    if (query.requiredValue()) {
-                        builder.addParameter(name, value);
-                    } else {
-                        builder.addParameter(value);
-                    }
+                if (query != null && !query.requiredValue()) {
+                    builder.addParameter(value);
                 } else {
                     builder.addParameter(name, value);
                 }

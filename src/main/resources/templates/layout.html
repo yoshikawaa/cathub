@@ -9,17 +9,10 @@
 </head>
 <body>
   <div id="menu" class="ui left demo vertical inverted sidebar labeled icon menu">
-    <a class="item" th:href="@{/}">
-      <i class="icon large home"></i>Home
-    </a>
-    <a class="item" th:href="@{/issues?type=issue}">
-      <i class="icon large search"></i>Issues
-    </a>
-    <a class="item" th:href="@{/issues?type=pr}">
-      <i class="icon large search"></i>PRs
-    </a>
-    <a class="item" th:href="@{/settings}">
-      <i class="icon large settings"></i>Settings
+    <a class="item" th:href="@{/}"> <i class="icon large home"></i>Home
+    </a> <a class="item" th:href="@{/issues?type=issue}"> <i class="icon large search"></i>Issues
+    </a> <a class="item" th:href="@{/issues?type=pr}"> <i class="icon large search"></i>Pulls
+    </a> <a class="item" th:href="@{/settings}"> <i class="icon large settings"></i>Settings
     </a>
   </div>
 
@@ -41,10 +34,10 @@
     </div>
   </div>
 
-  <script type="text/javascript">
-      $('.togglable').click(function() {
-        $('.ui.labeled.icon.sidebar').sidebar('toggle');
-      })
-    </script>
+  <div class="scripts">
+    <script type="text/javascript" th:src="@{/static/js/script.js}"></script>
+    <div layout:fragment="scripts" th:remove="tag"></div>
+  </div>
+
 </body>
 </html>

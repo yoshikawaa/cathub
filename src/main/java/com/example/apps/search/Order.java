@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Order {
-    @In({"comments", "created", "updated"})
+    @In({ "comments", "created", "updated" })
     private String sort;
-    @In({"asc", "desc"})
+    @In({ "asc", "desc" })
     private String order;
 }

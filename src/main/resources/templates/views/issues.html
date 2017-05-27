@@ -19,37 +19,37 @@
         <div class="ui form">
           <h4 class="ui dividing header">Organization/Repository</h4>
           <div class="four fields">
-            <div th:include="components/fields::text('org', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('repo', 'user')" th:remove="tag"></div>
+            <div th:replace="components/fields::text('org', 'user')"></div>
+            <div th:replace="components/fields::text('repo', 'user')"></div>
           </div>
           <h4 class="ui dividing header">Users</h4>
           <div class="four fields">
-            <div th:include="components/fields::text('author', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('assignee', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('mentions', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('commenter', 'user')" th:remove="tag"></div>
+            <div th:replace="components/fields::text('author', 'user')"></div>
+            <div th:replace="components/fields::text('assignee', 'user')"></div>
+            <div th:replace="components/fields::text('mentions', 'user')"></div>
+            <div th:replace="components/fields::text('commenter', 'user')"></div>
           </div>
           <div class="four fields">
-            <div th:include="components/fields::text('involves', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('reviewedBy', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('reviewRequested', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::text('team', 'user')" th:remove="tag"></div>
+            <div th:replace="components/fields::text('involves', 'user')"></div>
+            <div th:replace="components/fields::text('reviewedBy', 'user')"></div>
+            <div th:replace="components/fields::text('reviewRequested', 'user')"></div>
+            <div th:replace="components/fields::text('team', 'user')"></div>
           </div>
           <h4 class="ui dividing header">Categories/States</h4>
           <div class="four fields">
-            <div th:include="components/fields::select('type', '@type', 'linkify')" th:remove="tag"></div>
-            <div th:include="components/fields::text('label', 'user')" th:remove="tag"></div>
-            <div th:include="components/fields::select('is', '@is', 'linkify')" th:remove="tag"></div>
-            <div th:include="components/fields::select('review', '@review', 'linkify')" th:remove="tag"></div>
+            <div th:replace="components/fields::select('type', '@type', 'linkify')"></div>
+            <div th:replace="components/fields::text('label', 'user')"></div>
+            <div th:replace="components/fields::select('is', '@is', 'linkify')"></div>
+            <div th:replace="components/fields::select('review', '@review', 'linkify')"></div>
           </div>
           <div class="four fields">
-            <div th:include="components/fields::select('in', '@in', 'linkify')" th:remove="tag"></div>
-            <div th:include="components/fields::text('value', 'user')" th:remove="tag"></div>
+            <div th:replace="components/fields::select('in', '@in', 'linkify')"></div>
+            <div th:replace="components/fields::text('value', 'user')"></div>
           </div>
           <h4 class="ui dividing header">Order Results</h4>
           <div class="four fields" th:object="${order}">
-            <div th:include="components/fields::select('sort', '@sort', 'linkify')" th:remove="tag"></div>
-            <div th:include="components/fields::select('order', '@order', 'linkify')" th:remove="tag"></div>
+            <div th:replace="components/fields::select('sort', '@sort', 'linkify')"></div>
+            <div th:replace="components/fields::select('order', '@order', 'linkify')"></div>
           </div>
           <div class="ui fluid buttons">
             <button type="reset" class="ui button labeled icon">
@@ -64,95 +64,102 @@
       </div>
     </form>
 
-    <script type="text/javascript">
-          $('.modalable').on(
-              'click',
-              function() {
-                $('.ui.modal').modal('setting', 'transition', 'slide down')
-                    .modal('show');
-              });
-          $('button[type="submit"]').on('click', function() {
-            $('.form').addClass("loading");
-          });
-        </script>
-
-    <div th:switch="${issues == null}">
-      <div th:case="true">
-        <script type="text/javascript">
-                  $('.modalable').click();
-                </script>
+    <div th:if="${page.content != null}">
+      <div class="ui message positive">
+        <i class="icon close"></i>
+        <div class="header">Search issues completed!</div>
+        <p th:text="|Getting ${#lists.size(page.content)} issues / pull requests.|"></p>
       </div>
-      <div th:case="*">
-        <div class="ui message positive">
-          <i class="icon close"></i>
-          <div class="header">Search issues completed!</div>
-          <p th:text="|Getting ${#lists.size(issues)} issues / pull requests.|"></p>
-        </div>
 
-        <table class="ui selectable celled table">
-          <thead>
-            <tr>
-              <th>Issue</th>
-              <th>Labels</th>
-              <th>Milestone</th>
-              <th>State</th>
-              <th>Assignees</th>
-            </tr>
-          </thead>
-          <tbody th:each="issue : ${issues}" th:remove="all-but-first">
-            <tr>
-              <td><a th:href="${issue.htmlUrl}">
-                  <div class="ui ribbon label">
-                    <span th:text="|${issue.repository}#${issue.number}|"></span>
-                  </div>
-                  <span th:text="${issue.title}"></span>
-                  <div class="ui label">
-                    <i class="icon comments"></i><span th:text="${issue.comments}"></span>
-                  </div>
-                </a></td>
-              <td>
-                <div class="ui tag labels">
-                  <a class="ui label" th:each="label : ${issue.labels}"
-                    th:style="|background-color: ${label.colorCode}|" th:href="${label.htmlUrl}" th:text="${label.name}"></a>
+      <table class="ui selectable celled table">
+        <thead>
+          <tr>
+            <th colspan="5">
+              <form method="POST" th:action="@{/issues}" class="ui right floated pagination menu">
+                <div th:if="${not page.first}" th:remove="tag">
+                  <a data-page="0" class="icon item"> <i class="left chevron icon"></i>
+                  </a> <a th:attr="data-page=${page.number - 1}" class="icon item"> <i class="left chevron icon"></i>
+                  </a>
                 </div>
-              </td>
-              <td th:with="milestone=${issue.milestone}">
-                <div th:if="${milestone != null}">
-                  <i class="icon wait"></i>
-                  <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
+                <a th:each="i : ${page.numbers}" th:attrappend="data-page=${i != page.number} ? ${i}" class="icon item"
+                  th:classappend="${i == page.number} ? disabled"> <span th:text='${i + 1}'></span>
+                </a>
+                <div th:if="${not page.last}" th:remove="tag">
+                  <a th:attr="data-page=${page.number + 1}" class="icon item"> <i class="right chevron icon"></i>
+                  </a> <a th:attr="data-page=${page.totalPages - 1}" class="icon item"> <i class="right chevron icon"></i>
+                  </a>
                 </div>
-              </td>
-              <td>
-                <div th:switch="${issue.state == 'closed'}">
-                  <div th:case="true">
-                    <div class="ui label blue">
-                      <i class="icon checkmark"></i><span th:text="${issue.state}"></span>
-                    </div>
+                <input type="hidden" name="page" th:value="${page.number}" />
+                <div th:each="q : ${#eachable.asMap(query)}" th:object="${q}" th:remove="tag">
+                  <input type="hidden" th:name="*{key}" th:value="*{value}" />
+                </div>
+                <div th:each="o : ${#eachable.asMap(order)}" th:object="${o}" th:remove="tag">
+                  <input type="hidden" th:name="*{key}" th:value="*{value}" />
+                </div>
+              </form>
+            </th>
+          </tr>
+          <tr>
+            <th>Issue</th>
+            <th>Labels</th>
+            <th>Milestone</th>
+            <th>State</th>
+            <th>Assignees</th>
+          </tr>
+        </thead>
+        <tbody th:each="issue : ${page.content}" th:remove="all-but-first">
+          <tr>
+            <td><a th:href="${issue.htmlUrl}">
+                <div class="ui ribbon label">
+                  <span th:text="|${issue.repository}#${issue.number}|"></span>
+                </div> <span th:text="${issue.title}"></span>
+                <div class="ui label">
+                  <i class="icon comments"></i><span th:text="${issue.comments}"></span>
+                </div>
+            </a></td>
+            <td>
+              <div class="ui tag labels">
+                <a class="ui label" th:each="label : ${issue.labels}" th:style="|background-color: ${label.colorCode}|"
+                  th:href="${label.htmlUrl}" th:text="${label.name}"></a>
+              </div>
+            </td>
+            <td th:with="milestone=${issue.milestone}">
+              <div th:if="${milestone != null}">
+                <i class="icon wait"></i> <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
+              </div>
+            </td>
+            <td>
+              <div th:switch="${issue.state == 'closed'}">
+                <div th:case="true">
+                  <div class="ui label blue">
+                    <i class="icon checkmark"></i><span th:text="${issue.state}"></span>
                   </div>
-                  <div th:case="*">
-                    <div class="ui label red">
-                      <i class="icon bomb"></i><span th:text="${issue.state}"></span>
-                    </div>
+                </div>
+                <div th:case="*">
+                  <div class="ui label red">
+                    <i class="icon bomb"></i><span th:text="${issue.state}"></span>
                   </div>
                 </div>
-              </td>
-              <td>
-                <div th:each="assignee : ${issue.assignees}">
-                  <i class="icon user"></i>
-                  <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <script type="text/javascript">
-                  $('.message .close').on('click', function() {
-                    $(this).closest('.message').transition('fade');
-                  });
-                </script>
-      </div>
+              </div>
+            </td>
+            <td>
+              <div th:each="assignee : ${issue.assignees}">
+                <i class="icon user"></i> <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+
+  <div layout:fragment="scripts">
+    <div th:if="${page.content == null}">
+      <script type="text/javascript">
+              $('.modalable').click();
+            </script>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -2,14 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="layout">
 <head>
-<title>Home</title>
+<title>Panic!</title>
 </head>
 <body>
-  <div layout:fragment="header">Enjoy to manage Github!</div>
+  <div layout:fragment="header">Panic!</div>
   <div layout:fragment="contents">
-    <div class="ui massive possitive message">
-      <div class="header">Welcome!</div>
-      <p>Enjoy to manage Github!</p>
+    <div class="ui massive negative message">
+      <div class="header">Sorry error is occurred.</div>
+      <p>
+        Please re-start from <a th:href="@{/}">Home page</a>.
+      </p>
     </div>
   </div>
   <div layout:fragment="scripts"></div>

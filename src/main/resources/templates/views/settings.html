@@ -28,7 +28,7 @@
 
     <form method="POST" class="ui form" th:object="${settings}">
 
-      <h4 class="ui dividing header">User Accont</h4>
+      <h4 class="ui dividing header">User Account</h4>
       <div th:include="components/fields::text('user', 'user')" th:remove="tag"></div>
       <div th:include="components/fields::password('pass', 'user')" th:remove="tag"></div>
 
@@ -45,12 +45,7 @@
         </button>
       </div>
     </form>
-
-    <script type="text/javascript">
-          $('.message .close').on('click', function() {
-            $(this).closest('.message').transition('fade');
-          });
-        </script>
   </div>
+
 </body>
 </html>
