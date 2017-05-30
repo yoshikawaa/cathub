@@ -1,16 +1,17 @@
-package com.example.apps.search.helpers;
+package com.example.core.helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.example.apps.search.helpers.annotation.QueryParam;
-import com.example.core.exception.SystemException;
+import com.example.core.helper.annotation.QueryParam;
 
 public class QueryBuilder {
 
@@ -22,16 +23,12 @@ public class QueryBuilder {
     public static QueryBuilder from(Object obj) {
         QueryBuilder builder = new QueryBuilder();
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
+            ReflectionUtils.makeAccessible(field);
+
             // get query parameter(s)
             QueryParam query = field.getDeclaredAnnotation(QueryParam.class);
             String name = (query != null && !StringUtils.isEmpty(query.name())) ? query.name() : field.getName();
-            Object value = null;
-            try {
-                field.setAccessible(true);
-                value = field.get(obj);
-            } catch (IllegalAccessException | IllegalArgumentException e) {
-                throw new SystemException("failed to build query.", e);
-            }
+            Object value = ReflectionUtils.getField(field, obj);
 
             // ignore empty parameter(s)
             if (ObjectUtils.isEmpty(value) || (ObjectUtils.isArray(value) && ObjectUtils.isEmpty((Object[]) value))) {
@@ -63,7 +60,7 @@ public class QueryBuilder {
     }
 
     public QueryBuilder addParameter(String name, Object value) {
-        queries.add(name + KEY_VALUE_DELIMITER + value.toString());
+        queries.add(new StringJoiner(KEY_VALUE_DELIMITER).add(name).add(value.toString()).toString());
         return this;
     }
 

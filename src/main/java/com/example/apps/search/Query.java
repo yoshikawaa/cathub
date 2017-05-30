@@ -1,6 +1,8 @@
 package com.example.apps.search;
 
-import com.example.apps.search.helpers.annotation.QueryParam;
+import com.example.core.helper.annotation.QueryParam;
+import com.example.core.validation.constraints.Either;
+import com.example.core.validation.constraints.Either.CheckType;
 import com.example.core.validation.constraints.In;
 
 import lombok.Getter;
@@ -11,15 +13,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Either(value = { "org", "repo", "author", "assignee", "mentions", "commenter", "involves", "reviewedBy",
+        "reviewRequested", "team" }, checkType = CheckType.Empty)
 public class Query {
     // search by user & repository
     @QueryParam(name = "user")
     private String org;
     private String repo;
-    
-    // search by category
-    private String type;
-    private String[] label;
 
     // search by user
     private String author;
@@ -33,14 +33,18 @@ public class Query {
     private String reviewRequested;
     private String team;
 
-    // select by state
-    @In({"open", "closed", "merged"})
+    // search by category
+    private String type;
+    private String[] label;
+
+    // search by state
+    @In({ "open", "closed", "merged" })
     private String is;
-    @In({"none", "required", "approved", "changes_requested"})
+    @In({ "none", "required", "approved", "changes_requested" })
     private String review;
 
-    // select by other conditions
-    @In({"title", "body", "comments"})
+    // search by other conditions
+    @In({ "title", "body", "comments" })
     private String in;
     @QueryParam(requiredValue = false)
     private String value;
@@ -51,10 +55,11 @@ public class Query {
     private String merged;
     private String closed;
 
-    //private String no;
-    //private String language;
-    //private String status;
-    //private String head;
-    //private String base;
-    //private String project;
+    // unused conditions
+    // private String no;
+    // private String language;
+    // private String status;
+    // private String head;
+    // private String base;
+    // private String project;
 }

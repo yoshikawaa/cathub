@@ -1,12 +1,12 @@
-package com.example.apps.settings.helpers;
+package com.example.core.helper;
 
 import java.util.Arrays;
+import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.CookieGenerator;
-
-import com.example.core.exception.SystemException;
 
 public class CookieHelper extends CookieGenerator {
 
@@ -24,18 +24,16 @@ public class CookieHelper extends CookieGenerator {
 
     public static void addCookies(HttpServletResponse response, String prefix, Object obj) {
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
-            try {
-                field.setAccessible(true);
-                addCookie(response, prefix + "." + field.getName(), field.get(obj).toString());
-            } catch (IllegalAccessException | IllegalArgumentException e) {
-                throw new SystemException("failed to build cookie.", e);
-            }
+            ReflectionUtils.makeAccessible(field);
+            addCookie(response,
+                    new StringJoiner(".").add(prefix).add(field.getName()).toString(),
+                    ReflectionUtils.getField(field, obj).toString());
         });
     }
 
     public static void removeCookies(HttpServletResponse response, String prefix, Object obj) {
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
-            removeCookie(response, prefix + "." + field.getName());
+            removeCookie(response, new StringJoiner(".").add(prefix).add(field.getName()).toString());
         });
     }
 

@@ -23,11 +23,39 @@
   <div th:fragment="select (name, items, icon)" th:remove="tag">
     <div class="field" th:classappend="${#fields.hasErrors('__${name}__')} ? error">
       <label th:for="*{__${name}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${name}" th:remove="tag"></span>
-      </label> <select th:field="*{__${name}__}">
-        <option value="">---</option>
-        <option th:each="item : ${__${items}__}" th:value="${item}" th:text="${item}"></option>
-      </select>
+      </label>
+      <div class="ui selection dropdown">
+        <div class="default text">---</div>
+        <i class="dropdown icon"></i> <input type="hidden" th:field="*{__${name}__}" />
+        <div class="menu">
+          <div class="item" data-value="">---</div>
+          <div class="item" th:each="item : ${__${items}__}" th:attrappend="data-value=${item}" th:text="${item}"></div>
+        </div>
+      </div>
       <div class="ui pointing red basic label" th:if="${#fields.hasErrors('__${name}__')}" th:errors="*{__${name}__}"></div>
+    </div>
+  </div>
+
+  <div th:fragment="textWithSelect (textName, selectName, items, icon)" th:remove="tag">
+    <div class="field" th:classappend="${#fields.hasErrors('__${textName}__')} ? error">
+      <label th:for="*{__${textName}__}"> <i th:class="|icon ${icon}|"></i><span th:text="${textName}"
+        th:remove="tag"></span>
+      </label>
+      <div class="ui right labeled input">
+        <input th:field="*{__${textName}__}" th:placeholder="|Please input ${textName}|" />
+        <div class="ui dropdown label">
+          <div class="default text">---</div>
+          <i class="dropdown icon"></i> <input type="hidden" th:field="*{__${selectName}__}" />
+          <div class="menu">
+            <div class="item" data-value="">---</div>
+            <div class="item" th:each="item : ${__${items}__}" th:attrappend="data-value=${item}" th:text="${item}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ui pointing red basic label"
+        th:if="${#fields.hasErrors('__${textName}__') || #fields.hasErrors('__${selectName}__')}">
+        <span th:errors="*{__${textName}__}"></span> <span th:errors="*{__${selectName}__}"></span>
+      </div>
     </div>
   </div>
 

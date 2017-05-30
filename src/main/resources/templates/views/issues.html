@@ -9,14 +9,24 @@
 
   <div layout:fragment="contents">
 
-    <button class="ui button fluid labeled icon primary modalable">
-      <i class="icon search"></i>edit search condition
+    <button class="ui fluid labeled icon button primary modalable">
+      <i class="icon search"></i>search!
     </button>
 
-    <form method="POST" th:action="@{/issues}" th:object="${query}" class="ui fullscreen modal">
-      <div class="header">Please input search condition.</div>
+    <form method="POST" th:object="${query}" class="ui fullscreen modal">
+      <i class="icon close"></i>
+      <div class="header">
+        <i class="icon search"></i>Please input search condition.
+      </div>
       <div class="content">
         <div class="ui form">
+          <div class="ui message negative" th:if="${#fields.hasAnyErrors()}">
+            <i class="icon close"></i>
+            <div class="header">Input Validation Failed!</div>
+            <ul>
+              <li th:errors="${query}"></li>
+            </ul>
+          </div>
           <h4 class="ui dividing header">Organization/Repository</h4>
           <div class="four fields">
             <div th:replace="components/fields::text('org', 'user')"></div>
@@ -38,24 +48,22 @@
           <h4 class="ui dividing header">Categories/States</h4>
           <div class="four fields">
             <div th:replace="components/fields::select('type', '@type', 'linkify')"></div>
-            <div th:replace="components/fields::text('label', 'user')"></div>
             <div th:replace="components/fields::select('is', '@is', 'linkify')"></div>
+            <div th:replace="components/fields::text('label', 'user')"></div>
             <div th:replace="components/fields::select('review', '@review', 'linkify')"></div>
           </div>
           <div class="four fields">
-            <div th:replace="components/fields::select('in', '@in', 'linkify')"></div>
-            <div th:replace="components/fields::text('value', 'user')"></div>
+            <div th:replace="components/fields::textWithSelect('value', 'in', '@in', 'user')"></div>
           </div>
           <h4 class="ui dividing header">Order Results</h4>
           <div class="four fields" th:object="${order}">
             <div th:replace="components/fields::select('sort', '@sort', 'linkify')"></div>
             <div th:replace="components/fields::select('order', '@order', 'linkify')"></div>
           </div>
-          <div class="ui fluid buttons">
-            <button type="reset" class="ui button labeled icon">
+          <div class="ui two bottom attached buttons">
+            <button type="reset" class="ui labeled icon button">
               <i class="icon remove"></i>reset
             </button>
-            <div class="or"></div>
             <button type="submit" class="ui button labeled icon primary">
               <i class="icon search"></i>search
             </button>
@@ -64,29 +72,39 @@
       </div>
     </form>
 
-    <div th:if="${page.content != null}">
-      <div class="ui message positive">
-        <i class="icon close"></i>
-        <div class="header">Search issues completed!</div>
-        <p th:text="|Getting ${#lists.size(page.content)} issues / pull requests.|"></p>
+    <div th:if="${page != null}">
+      <div class="ui divider"></div>
+      <div class="ui large positive icon message">
+        <i class="icon checkmark box"></i> <i class="icon close"></i>
+        <div class="content">
+          <div class="header">Search issues completed!</div>
+          <p th:text="|Getting ${#lists.size(page.content)} issues / pull requests.|"></p>
+        </div>
       </div>
 
       <table class="ui selectable celled table">
         <thead>
           <tr>
             <th colspan="5">
-              <form method="POST" th:action="@{/issues}" class="ui right floated pagination menu">
+              <form method="POST" class="ui right floated pagination menu">
                 <div th:if="${not page.first}" th:remove="tag">
-                  <a data-page="0" class="icon item"> <i class="left chevron icon"></i>
-                  </a> <a th:attr="data-page=${page.number - 1}" class="icon item"> <i class="left chevron icon"></i>
+                  <a data-page="0" class="icon item">
+                    <i class="fast backward icon"></i>
+                  </a>
+                  <a th:attr="data-page=${page.number - 1}" class="icon item">
+                    <i class="backward icon"></i>
                   </a>
                 </div>
                 <a th:each="i : ${page.numbers}" th:attrappend="data-page=${i != page.number} ? ${i}" class="icon item"
-                  th:classappend="${i == page.number} ? disabled"> <span th:text='${i + 1}'></span>
+                  th:classappend="${i == page.number} ? disabled">
+                  <span th:text='${i + 1}'></span>
                 </a>
                 <div th:if="${not page.last}" th:remove="tag">
-                  <a th:attr="data-page=${page.number + 1}" class="icon item"> <i class="right chevron icon"></i>
-                  </a> <a th:attr="data-page=${page.totalPages - 1}" class="icon item"> <i class="right chevron icon"></i>
+                  <a th:attr="data-page=${page.number + 1}" class="icon item">
+                    <i class="forward icon"></i>
+                  </a>
+                  <a th:attr="data-page=${page.totalPages - 1}" class="icon item">
+                    <i class="fast forward icon"></i>
                   </a>
                 </div>
                 <input type="hidden" name="page" th:value="${page.number}" />
@@ -112,11 +130,12 @@
             <td><a th:href="${issue.htmlUrl}">
                 <div class="ui ribbon label">
                   <span th:text="|${issue.repository}#${issue.number}|"></span>
-                </div> <span th:text="${issue.title}"></span>
+                </div>
+                <span th:text="${issue.title}"></span>
                 <div class="ui label">
                   <i class="icon comments"></i><span th:text="${issue.comments}"></span>
                 </div>
-            </a></td>
+              </a></td>
             <td>
               <div class="ui tag labels">
                 <a class="ui label" th:each="label : ${issue.labels}" th:style="|background-color: ${label.colorCode}|"
@@ -125,7 +144,8 @@
             </td>
             <td th:with="milestone=${issue.milestone}">
               <div th:if="${milestone != null}">
-                <i class="icon wait"></i> <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
+                <i class="icon wait"></i>
+                <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
               </div>
             </td>
             <td>
@@ -144,7 +164,8 @@
             </td>
             <td>
               <div th:each="assignee : ${issue.assignees}">
-                <i class="icon user"></i> <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
+                <i class="icon user"></i>
+                <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
               </div>
             </td>
           </tr>
@@ -154,7 +175,7 @@
   </div>
 
   <div layout:fragment="scripts">
-    <div th:if="${page.content == null}">
+    <div th:if="${page == null}">
       <script type="text/javascript">
               $('.modalable').click();
             </script>

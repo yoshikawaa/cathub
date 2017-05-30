@@ -9,37 +9,40 @@
 
   <div layout:fragment="contents">
 
-    <div th:switch="${status}">
-      <div th:case="saved">
-        <div class="ui message positive">
-          <i class="icon close"></i>
-          <div class="header">Saved settings!</div>
-          <p>Settings saved to your Browser Cookie</p>
-        </div>
-      </div>
-      <div th:case="cleared">
-        <div class="ui message negative">
-          <i class="icon close"></i>
-          <div class="header">Cleared settings!</div>
-          <p>Settings cleared from your Browser Cookie</p>
-        </div>
-      </div>
-    </div>
-
     <form method="POST" class="ui form" th:object="${settings}">
 
-      <h4 class="ui dividing header">User Account</h4>
+      <div th:switch="${status}">
+        <div th:case="saved">
+          <div class="ui large positive icon message">
+            <i class="icon checkmark box"></i> <i class="icon close"></i>
+            <div class="content">
+              <div class="header">Saved settings!</div>
+              <p>Settings saved to your Browser Cookie.</p>
+            </div>
+          </div>
+        </div>
+        <div th:case="cleared">
+          <div class="ui large negative icon message">
+            <i class="icon checkmark box"></i> <i class="icon close"></i>
+            <div class="content">
+              <div class="header">Cleared settings!</div>
+              <p>Settings cleared from your Browser Cookie.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="ui dividing header">Your Account</h4>
       <div th:include="components/fields::text('user', 'user')" th:remove="tag"></div>
       <div th:include="components/fields::password('pass', 'user')" th:remove="tag"></div>
 
-      <h4 class="ui dividing header">Default Organization &amp; Repository</h4>
+      <h4 class="ui dividing header">Your Organization</h4>
       <div th:include="components/fields::text('org', 'user')" th:remove="tag"></div>
 
-      <div class="ui fluid buttons">
+      <div class="ui two bottom attached buttons">
         <button type="submit" name="clear" class="ui button labeled icon">
           <i class="icon remove"></i>clear
         </button>
-        <div class="or"></div>
         <button type="submit" name="save" class="ui button labeled icon primary">
           <i class="icon save"></i>save
         </button>

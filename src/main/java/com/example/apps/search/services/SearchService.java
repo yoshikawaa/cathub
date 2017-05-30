@@ -15,8 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.example.apps.search.Order;
 import com.example.apps.search.Query;
 import com.example.apps.search.entities.Issue;
-import com.example.apps.search.helpers.QueryBuilder;
-import com.example.core.data.domain.PageRangeImpl;
+import com.example.core.data.domain.TransitablePageImpl;
+import com.example.core.helper.QueryBuilder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +53,6 @@ public class SearchService {
         ResponseEntity<Issues> entity = rest.getForEntity(uri, Issues.class);
         Issues body = entity.getBody();
 
-        return new PageRangeImpl<Issue>(body.getItems(), pageable, body.getTotalCount());
+        return new TransitablePageImpl<Issue>(body.getItems(), pageable, body.getTotalCount());
     }
 }

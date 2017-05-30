@@ -1,8 +1,5 @@
 package com.example.configs;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -10,8 +7,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.example.core.thymeleaf.dialect.SpringAdditionalDialect;
+import com.example.core.thymeleaf.dialect.AdditionalDialect;
 import com.example.core.thymeleaf.expression.Eachable;
+import com.google.common.collect.ImmutableMap;
 
 @Configuration
 @EnableWebMvc
@@ -28,9 +26,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public SpringAdditionalDialect springAdditionalDialect() {
-        Map<String, Object> expressionObjects = new HashMap<String, Object>();
-        expressionObjects.put("eachable", new Eachable());
-        return new SpringAdditionalDialect(expressionObjects);
+    public AdditionalDialect additionalDialect() {
+        return new AdditionalDialect(ImmutableMap.of("eachable", new Eachable()));
     }
 }

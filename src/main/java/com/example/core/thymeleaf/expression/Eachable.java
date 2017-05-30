@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.util.ObjectUtils;
-
-import com.example.core.exception.SystemException;
+import org.springframework.util.ReflectionUtils;
 
 public class Eachable {
 
@@ -18,22 +17,10 @@ public class Eachable {
 
     public List<Object> asList(Object obj) {
         List<Object> list = new ArrayList<Object>();
+        
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
-            Object value = null;
-            try {
-                field.setAccessible(true);
-                value = field.get(obj);
-            } catch (IllegalAccessException | IllegalArgumentException e) {
-                throw new SystemException("failed to convert as list.", e);
-            }
-
-            if (ObjectUtils.isArray(value)) {
-                Arrays.stream((Object[]) value).forEach(v -> {
-                    list.add(v);
-                });
-            } else {
-                list.add(value);
-            }
+            ReflectionUtils.makeAccessible(field);
+            addToList(list, ReflectionUtils.getField(field, obj));
         });
         return list;
     }
@@ -41,23 +28,30 @@ public class Eachable {
     public Map<String, Object> asMap(Object obj) {
         Map<String, Object> map = new HashMap<String, Object>();
         Arrays.stream(obj.getClass().getDeclaredFields()).forEach(field -> {
-            Object value = null;
-            try {
-                field.setAccessible(true);
-                value = field.get(obj);
-            } catch (IllegalAccessException | IllegalArgumentException e) {
-                throw new SystemException("failed to convert as map.", e);
-            }
-
-            if (ObjectUtils.isArray(value)) {
-                Arrays.stream((Object[]) value).forEach(v -> {
-                    map.put(field.getName(), v);
-                });
-            } else {
-                map.put(field.getName(), value);
-            }
+            ReflectionUtils.makeAccessible(field);
+            putOnMap(map, field.getName(), ReflectionUtils.getField(field, obj));
         });
         return map;
+    }
+    
+    private void addToList(List<Object> list, Object value) {
+        if (ObjectUtils.isArray(value)) {
+            Arrays.stream((Object[]) value).forEach(v -> {
+                addToList(list, value);
+            });
+        } else {
+            list.add(value);
+        }
+    }
+    
+    private void putOnMap(Map<String, Object> map, String name, Object value) {
+        if (ObjectUtils.isArray(value)) {
+            Arrays.stream((Object[]) value).forEach(v -> {
+                putOnMap(map, name, v);
+            });
+        } else {
+            map.put(name, value);
+        }
     }
 
 }

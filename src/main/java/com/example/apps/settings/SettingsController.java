@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.apps.settings.helpers.CookieHelper;
+import com.example.core.helper.CookieHelper;
 import com.example.core.validation.groups.Clear;
 import com.example.core.validation.groups.Save;
 

@@ -11,13 +11,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PageRangeImpl<T> extends PageImpl<T> {
+public class TransitablePageImpl<T> extends PageImpl<T> {
     private static final long serialVersionUID = 1L;
     private static final int PAGE_RANGE = 2;
 
     private int[] numbers;
 
-    public PageRangeImpl(List<T> content, Pageable pageable, long total) {
+    public TransitablePageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
 
         int current = pageable.getPageNumber();

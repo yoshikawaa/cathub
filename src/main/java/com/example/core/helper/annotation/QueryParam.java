@@ -1,4 +1,4 @@
-package com.example.apps.search.helpers.annotation;
+package com.example.core.helper.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
