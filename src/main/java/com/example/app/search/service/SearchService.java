@@ -1,4 +1,4 @@
-package com.example.apps.search.services;
+package com.example.app.search.service;
 
 import java.net.URI;
 
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.apps.search.Order;
-import com.example.apps.search.Query;
-import com.example.apps.search.entities.Issue;
+import com.example.app.search.Order;
+import com.example.app.search.Query;
+import com.example.app.search.entity.Issue;
 import com.example.core.data.domain.TransitablePageImpl;
 import com.example.core.helper.QueryBuilder;
 

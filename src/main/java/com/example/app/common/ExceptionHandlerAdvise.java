@@ -1,4 +1,4 @@
-package com.example.apps.common;
+package com.example.app.common;
 
 import java.io.IOException;
 import java.util.Map;
@@ -15,13 +15,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ControllerAdvice
-public class ControllerAdvise {
+public class ExceptionHandlerAdvise {
 
     @ExceptionHandler(Exception.class)
     public String handleException(Model model, Exception e) {
         model.addAttribute("summary", "Internal Server Error");
         model.addAttribute("message", e.getMessage());
-        return "error";
+        return view();
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
@@ -34,6 +34,10 @@ public class ControllerAdvise {
         model.addAttribute("message",
                 new StringJoiner(" : ").add(e.getMessage()).add(body.get("message").toString()).toString());
         model.addAttribute("errors", body.get("errors"));
+        return view();
+    }
+
+    private String view() {
         return "error";
     }
 }

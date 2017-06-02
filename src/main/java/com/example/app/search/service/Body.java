@@ -1,4 +1,4 @@
-package com.example.apps.search.services;
+package com.example.app.search.service;
 
 import java.util.List;
 

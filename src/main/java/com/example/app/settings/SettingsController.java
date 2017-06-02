@@ -1,4 +1,4 @@
-package com.example.apps.settings;
+package com.example.app.settings;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.groups.Default;
@@ -24,10 +24,6 @@ public class SettingsController {
     @ModelAttribute
     public Settings settings() {
         return new Settings();
-    }
-
-    public String view() {
-        return "views/settings";
     }
 
     @GetMapping
@@ -68,5 +64,9 @@ public class SettingsController {
         model.addAttribute("status", "cleared");
         model.addAttribute(new Settings());
         return view();
+    }
+
+    private String view() {
+        return "views/settings";
     }
 }

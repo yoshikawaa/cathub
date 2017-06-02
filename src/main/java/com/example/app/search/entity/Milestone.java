@@ -1,4 +1,4 @@
-package com.example.apps.search.entities;
+package com.example.app.search.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,8 +7,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class Assignee {
+public class Milestone {
+    private String title;
     @JsonProperty("html_url")
     private String htmlUrl;
-    private String login;
 }

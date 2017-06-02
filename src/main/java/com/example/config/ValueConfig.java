@@ -1,4 +1,4 @@
-package com.example.configs;
+package com.example.config;
 
 import java.util.Arrays;
 import java.util.List;

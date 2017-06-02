@@ -1,4 +1,4 @@
-package com.example.apps.settings;
+package com.example.app.settings;
 
 import org.hibernate.validator.constraints.NotBlank;
 

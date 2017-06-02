@@ -1,4 +1,4 @@
-package com.example.apps.search;
+package com.example.app.search;
 
 import com.example.core.helper.annotation.QueryParam;
 import com.example.core.validation.constraints.Either;

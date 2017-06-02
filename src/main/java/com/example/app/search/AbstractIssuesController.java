@@ -1,4 +1,4 @@
-package com.example.apps.search;
+package com.example.app.search;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.apps.search.services.SearchService;
+import com.example.app.search.service.SearchService;
 
 public abstract class AbstractIssuesController {
 
@@ -24,10 +24,6 @@ public abstract class AbstractIssuesController {
     @ModelAttribute
     public Order order() {
         return new Order();
-    }
-
-    public String view() {
-        return "views/issues";
     }
 
     public String index(Query q, String org) {
@@ -49,5 +45,9 @@ public abstract class AbstractIssuesController {
 
         model.addAttribute("page", service.getIssues(q, o, pageable));
         return view();
+    }
+
+    private String view() {
+        return "views/issues";
     }
 }
