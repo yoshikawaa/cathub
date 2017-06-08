@@ -60,6 +60,7 @@
             <div th:replace="components/fields::select('sort', '@sort', 'linkify')"></div>
             <div th:replace="components/fields::select('order', '@order', 'linkify')"></div>
           </div>
+          <input th:if="${page != null}" type="hidden" name="size" th:value="${page.size}" />
           <div class="ui two bottom attached buttons">
             <button type="reset" class="ui labeled icon button">
               <i class="icon remove"></i>reset
@@ -74,17 +75,26 @@
 
     <div th:if="${page != null}">
       <div class="ui divider"></div>
-      <div class="ui large positive icon message">
+      <div class="ui large icon message" th:classappend="${page.exceedsLimitOfElements} ? negative : positive">
         <i class="icon checkmark box"></i> <i class="icon close"></i>
         <div class="content">
-          <div class="header">Search issues completed!</div>
-          <p th:text="|Getting ${#lists.size(page.content)} issues / pull requests.|"></p>
+          <div class="header" th:switch="${page.exceedsLimitOfElements}">
+            <span th:case="true"
+              th:text="|Search result is over ${page.limitOfElements}. Please narrow the target a little more.|"></span>
+            <span th:case="*">Search issues completed!</span>
+          </div>
+          <div th:switch="${page.totalPages > 1}">
+            <p th:case="true"
+              th:text="|Getting ${#lists.size(page.content)} issues / pull requests out of ${page.totalElements}.|">
+            </p>
+            <p th:case="*" th:text="|Getting ${#lists.size(page.content)} issues / pull requests.|"></p>
+          </div>
         </div>
       </div>
 
       <table class="ui selectable celled table">
         <thead>
-          <tr>
+          <tr th:if="${page.totalPages > 1}">
             <th colspan="5">
               <form method="POST" class="ui right floated pagination menu">
                 <div th:if="${not page.first}" th:remove="tag">
@@ -107,11 +117,18 @@
                     <i class="fast forward icon"></i>
                   </a>
                 </div>
+                <div class="ui compact selection dropdown">
+                  <input type="hidden" name="size" th:value="${page.size}" /><i class="dropdown icon"></i>
+                  <div class="default text" th:text="${page.size}"></div>
+                  <div class="menu">
+                    <div class="item" th:each="item : ${@size}" th:attrappend="data-value=${item}" th:text="${item}"></div>
+                  </div>
+                </div>
                 <input type="hidden" name="page" th:value="${page.number}" />
-                <div th:each="q : ${#eachable.asMap(query)}" th:object="${q}" th:remove="tag">
+                <div th:each="q : ${#eachs.asMap(query)}" th:object="${q}" th:remove="tag">
                   <input type="hidden" th:name="*{key}" th:value="*{value}" />
                 </div>
-                <div th:each="o : ${#eachable.asMap(order)}" th:object="${o}" th:remove="tag">
+                <div th:each="o : ${#eachs.asMap(order)}" th:object="${o}" th:remove="tag">
                   <input type="hidden" th:name="*{key}" th:value="*{value}" />
                 </div>
               </form>

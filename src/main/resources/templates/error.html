@@ -12,11 +12,11 @@
       <div class="content">
         <div class="header" th:text="|Sorry, ${summary}.|"></div>
         <p th:text="${message}"></p>
-        <ul>
-          <li th:each="error : ${errors}" th:text="${error.message}"></li>
+        <ul th:if="${details != null}">
+          <li th:each="detail : ${details}" th:text="${detail.message}"></li>
         </ul>
         <p>
-          <a th:href="@{/}">Please back to Home.</a>
+          <a th:href="@{/}">Back to Home.</a>
         </p>
       </div>
     </div>

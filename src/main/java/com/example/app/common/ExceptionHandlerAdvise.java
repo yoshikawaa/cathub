@@ -33,7 +33,7 @@ public class ExceptionHandlerAdvise {
                 });
         model.addAttribute("message",
                 new StringJoiner(" : ").add(e.getMessage()).add(body.get("message").toString()).toString());
-        model.addAttribute("errors", body.get("errors"));
+        model.addAttribute("details", body.get("errors"));
         return view();
     }
 

@@ -2,7 +2,6 @@ package com.example.app.search;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +14,7 @@ public abstract class AbstractIssuesController {
 
     @Autowired
     private SearchService service;
-
+    
     @ModelAttribute
     public Query query() {
         return new Query();
@@ -37,7 +36,7 @@ public abstract class AbstractIssuesController {
             BindingResult qResult,
             @Validated Order o,
             BindingResult oResult,
-            @PageableDefault(size = 30) Pageable pageable) {
+            Pageable pageable) {
 
         if (qResult.hasErrors() || oResult.hasErrors()) {
             return view();
@@ -46,7 +45,7 @@ public abstract class AbstractIssuesController {
         model.addAttribute("page", service.getIssues(q, o, pageable));
         return view();
     }
-
+    
     private String view() {
         return "views/issues";
     }

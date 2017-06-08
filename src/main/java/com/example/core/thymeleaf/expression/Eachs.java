@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
-public class Eachable {
+public class Eachs {
 
     public Object[] asArray(Object obj) {
         return this.asList(obj).toArray();

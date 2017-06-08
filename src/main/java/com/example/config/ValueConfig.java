@@ -40,4 +40,9 @@ public class ValueConfig {
     public List<String> order() {
         return Arrays.asList("asc", "desc");
     }
+    @ApplicationScope
+    @Bean("size")
+    public List<String> size() {
+        return Arrays.asList("10", "30", "50", "100");
+    }
 }

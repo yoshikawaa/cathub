@@ -13,6 +13,10 @@ $('a[data-page]').on('click', function() {
   $('.ui.form').addClass("loading");
   $(this).closest('form').submit();
 });
+$('input[name="size"]').on('change', function() {
+  $('.ui.form').addClass("loading");
+  $(this).closest('form').submit();
+});
 /* action:close message */
 $('.message .close').on('click', function() {
   $(this).closest('.message').transition('fade');

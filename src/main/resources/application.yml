@@ -11,11 +11,17 @@ server:
 spring:
   thymeleaf:
     cache: false
-
+     
 # logging properties
 logging:
   level:
     com.example: DEBUG
+
+# app properties
+app:
+  data:
+    commons:
+      default-page-size: 100
 
 # api properties
 api:
