@@ -14,7 +14,7 @@ public abstract class AbstractIssuesController {
 
     @Autowired
     private SearchService service;
-    
+
     @ModelAttribute
     public Query query() {
         return new Query();
@@ -45,7 +45,22 @@ public abstract class AbstractIssuesController {
         model.addAttribute("page", service.getIssues(q, o, pageable));
         return view();
     }
-    
+
+    @PostMapping(params = "download")
+    public String download(Model model,
+            @Validated Query q,
+            BindingResult qResult,
+            @Validated Order o,
+            BindingResult oResult) {
+
+        if (qResult.hasErrors() || oResult.hasErrors()) {
+            return view();
+        }
+
+        model.addAttribute("issues", service.getAllIssues(q, o));
+        return "issuesExcelView";
+}
+
     private String view() {
         return "views/issues";
     }

@@ -9,8 +9,8 @@
 
   <div layout:fragment="contents">
 
-    <button class="ui fluid labeled icon button primary modalable">
-      <i class="icon search"></i>search!
+    <button class="ui fluid primary labeled icon button modalable">
+      <i class="icon search"></i>Search!
     </button>
 
     <form method="POST" th:object="${query}" class="ui fullscreen modal">
@@ -63,10 +63,10 @@
           <input th:if="${page != null}" type="hidden" name="size" th:value="${page.size}" />
           <div class="ui two bottom attached buttons">
             <button type="reset" class="ui labeled icon button">
-              <i class="icon remove"></i>reset
+              <i class="icon remove"></i>Reset!
             </button>
-            <button type="submit" class="ui button labeled icon primary">
-              <i class="icon search"></i>search
+            <button type="submit" class="ui primary labeled icon button">
+              <i class="icon search"></i>Search!
             </button>
           </div>
         </div>
@@ -92,102 +92,112 @@
         </div>
       </div>
 
-      <table class="ui selectable celled table">
-        <thead>
-          <tr th:if="${page.totalPages > 1}">
-            <th colspan="5">
-              <form method="POST" class="ui right floated pagination menu">
-                <div th:if="${not page.first}" th:remove="tag">
-                  <a data-page="0" class="icon item">
-                    <i class="fast backward icon"></i>
+      <form method="POST">
+        <table class="ui selectable celled table">
+          <thead>
+            <tr th:if="${page.totalPages > 1}">
+              <th colspan="5" class="ui form">
+                <div class="ui right floated pagination menu">
+                  <div th:if="${not page.first}" th:remove="tag">
+                    <a data-page="0" class="icon item">
+                      <i class="fast backward icon"></i>
+                    </a>
+                    <a th:attr="data-page=${page.number - 1}" class="icon item">
+                      <i class="backward icon"></i>
+                    </a>
+                  </div>
+                  <a th:each="i : ${page.numbers}" th:attrappend="data-page=${i != page.number} ? ${i}"
+                    class="icon item" th:classappend="${i == page.number} ? disabled">
+                    <span th:text='${i + 1}'></span>
                   </a>
-                  <a th:attr="data-page=${page.number - 1}" class="icon item">
-                    <i class="backward icon"></i>
-                  </a>
-                </div>
-                <a th:each="i : ${page.numbers}" th:attrappend="data-page=${i != page.number} ? ${i}" class="icon item"
-                  th:classappend="${i == page.number} ? disabled">
-                  <span th:text='${i + 1}'></span>
-                </a>
-                <div th:if="${not page.last}" th:remove="tag">
-                  <a th:attr="data-page=${page.number + 1}" class="icon item">
-                    <i class="forward icon"></i>
-                  </a>
-                  <a th:attr="data-page=${page.totalPages - 1}" class="icon item">
-                    <i class="fast forward icon"></i>
-                  </a>
-                </div>
-                <div class="ui compact selection dropdown">
-                  <input type="hidden" name="size" th:value="${page.size}" /><i class="dropdown icon"></i>
-                  <div class="default text" th:text="${page.size}"></div>
-                  <div class="menu">
-                    <div class="item" th:each="item : ${@size}" th:attrappend="data-value=${item}" th:text="${item}"></div>
+                  <div th:if="${not page.last}" th:remove="tag">
+                    <a th:attr="data-page=${page.number + 1}" class="icon item">
+                      <i class="forward icon"></i>
+                    </a>
+                    <a th:attr="data-page=${page.totalPages - 1}" class="icon item">
+                      <i class="fast forward icon"></i>
+                    </a>
+                  </div>
+                  <div class="ui compact selection dropdown">
+                    <input type="hidden" name="size" th:value="${page.size}" /><i class="dropdown icon"></i>
+                    <div class="default text" th:text="${page.size}"></div>
+                    <div class="menu">
+                      <div class="item" th:each="item : ${@size}" th:attrappend="data-value=${item}" th:text="${item}"></div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="page" th:value="${page.number}" />
+                  <div th:each="q : ${#eachs.asMap(query)}" th:object="${q}" th:remove="tag">
+                    <input type="hidden" th:name="*{key}" th:value="*{value}" />
+                  </div>
+                  <div th:each="o : ${#eachs.asMap(order)}" th:object="${o}" th:remove="tag">
+                    <input type="hidden" th:name="*{key}" th:value="*{value}" />
                   </div>
                 </div>
-                <input type="hidden" name="page" th:value="${page.number}" />
-                <div th:each="q : ${#eachs.asMap(query)}" th:object="${q}" th:remove="tag">
-                  <input type="hidden" th:name="*{key}" th:value="*{value}" />
+              </th>
+            </tr>
+            <tr>
+              <th>Issue</th>
+              <th>Labels</th>
+              <th>Milestone</th>
+              <th>State</th>
+              <th>Assignees</th>
+            </tr>
+          </thead>
+          <tbody th:each="issue : ${page.content}" th:remove="all-but-first">
+            <tr>
+              <td><a th:href="${issue.htmlUrl}">
+                  <div class="ui ribbon label">
+                    <span th:text="|${issue.repository}#${issue.number}|"></span>
+                  </div>
+                  <span th:text="${issue.title}"></span>
+                  <div class="ui label">
+                    <i class="icon comments"></i><span th:text="${issue.comments}"></span>
+                  </div>
+                </a></td>
+              <td>
+                <div class="ui tag labels">
+                  <a class="ui label" th:each="label : ${issue.labels}"
+                    th:style="|background-color: ${label.colorCode}|" th:href="${label.htmlUrl}" th:text="${label.name}"></a>
                 </div>
-                <div th:each="o : ${#eachs.asMap(order)}" th:object="${o}" th:remove="tag">
-                  <input type="hidden" th:name="*{key}" th:value="*{value}" />
+              </td>
+              <td th:with="milestone=${issue.milestone}">
+                <div th:if="${milestone != null}">
+                  <i class="icon wait"></i>
+                  <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
                 </div>
-              </form>
-            </th>
-          </tr>
-          <tr>
-            <th>Issue</th>
-            <th>Labels</th>
-            <th>Milestone</th>
-            <th>State</th>
-            <th>Assignees</th>
-          </tr>
-        </thead>
-        <tbody th:each="issue : ${page.content}" th:remove="all-but-first">
-          <tr>
-            <td><a th:href="${issue.htmlUrl}">
-                <div class="ui ribbon label">
-                  <span th:text="|${issue.repository}#${issue.number}|"></span>
-                </div>
-                <span th:text="${issue.title}"></span>
-                <div class="ui label">
-                  <i class="icon comments"></i><span th:text="${issue.comments}"></span>
-                </div>
-              </a></td>
-            <td>
-              <div class="ui tag labels">
-                <a class="ui label" th:each="label : ${issue.labels}" th:style="|background-color: ${label.colorCode}|"
-                  th:href="${label.htmlUrl}" th:text="${label.name}"></a>
-              </div>
-            </td>
-            <td th:with="milestone=${issue.milestone}">
-              <div th:if="${milestone != null}">
-                <i class="icon wait"></i>
-                <a th:href="${milestone.htmlUrl}" th:text="${milestone.title}"></a>
-              </div>
-            </td>
-            <td>
-              <div th:switch="${issue.state == 'closed'}">
-                <div th:case="true">
-                  <div class="ui label blue">
-                    <i class="icon checkmark"></i><span th:text="${issue.state}"></span>
+              </td>
+              <td>
+                <div th:switch="${issue.state == 'closed'}">
+                  <div th:case="true">
+                    <div class="ui label blue">
+                      <i class="icon checkmark"></i><span th:text="${issue.state}"></span>
+                    </div>
+                  </div>
+                  <div th:case="*">
+                    <div class="ui label red">
+                      <i class="icon bomb"></i><span th:text="${issue.state}"></span>
+                    </div>
                   </div>
                 </div>
-                <div th:case="*">
-                  <div class="ui label red">
-                    <i class="icon bomb"></i><span th:text="${issue.state}"></span>
-                  </div>
+              </td>
+              <td>
+                <div th:each="assignee : ${issue.assignees}">
+                  <i class="icon user"></i>
+                  <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div th:each="assignee : ${issue.assignees}">
-                <i class="icon user"></i>
-                <a th:href="${assignee.htmlUrl}" th:text="${assignee.login}"></a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="5" class="ui form"><button type="submit" name="download"
+                  class="ui right floated primary labeled icon button loading-timeout">
+                  <i class="file excel outline icon"></i>Download as Excel!
+                </button></th>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
     </div>
   </div>
 

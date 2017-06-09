@@ -11,20 +11,25 @@ server:
 spring:
   thymeleaf:
     cache: false
-     
+    excluded-view-names : issuesExcelView
+    
 # logging properties
 logging:
   level:
+    org.springframework: WARN
     com.example: DEBUG
 
 # app properties
 app:
   data:
     commons:
-      default-page-size: 100
+      default-page-size: 30
 
 # api properties
 api:
   github:
     search:
       issues: https://api.github.com/search/issues
+      max-page-size: 100
+      limit-element-size: 1000
+      

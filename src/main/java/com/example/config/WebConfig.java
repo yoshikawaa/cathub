@@ -12,6 +12,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.example.core.thymeleaf.dialect.AdditionalDialect;
@@ -26,28 +27,32 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("${app.data.commons.default-page-size}")
     private int size;
-    
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
         resolver.setFallbackPageable(new PageRequest(0, size));
         argumentResolvers.add(resolver);
-        super.addArgumentResolvers(argumentResolvers);        
     }
-
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
-    @Bean
-    public AdditionalDialect additionalDialect() {
-        return new AdditionalDialect(ImmutableMap.of("eachs", new Eachs(), "maths", new Maths()));
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.beanName();
     }
     
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("views/home");
+    }
+
+    @Bean
+    public AdditionalDialect additionalDialect() {
+        return new AdditionalDialect(ImmutableMap.of("eachs", new Eachs(), "maths", new Maths()));
     }
 
 }

@@ -42,7 +42,7 @@ public class ValueConfig {
     }
     @ApplicationScope
     @Bean("size")
-    public List<String> size() {
-        return Arrays.asList("10", "30", "50", "100");
+    public List<Integer> size() {
+        return Arrays.asList(10, 30, 50, 100);
     }
 }

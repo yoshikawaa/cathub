@@ -1,5 +1,17 @@
 {"properties": [{
+  "name": "app.data.commons.default-page-size",
+  "type": "java.lang.Integer",
+  "description": "default page size of spring-data-commons PageableHandlerMethodArgumentResolver"
+},{
   "name": "api.github.search.issues",
   "type": "java.lang.String",
-  "description": "A description for 'api.github.search.issues'"
+  "description": "URI of github api search issues"
+},{
+  "name": "api.github.search.max-page-size",
+  "type": "java.lang.Integer",
+  "description": "max page size of github api search"
+},{
+  "name": "api.github.search.limit-element-size",
+  "type": "java.lang.Integer",
+  "description": "limit element size of github api search"
 }]}
