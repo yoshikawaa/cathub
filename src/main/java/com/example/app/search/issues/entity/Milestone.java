@@ -1,4 +1,4 @@
-package com.example.app.search.entity;
+package com.example.app.search.issues.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -9,10 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.example.core.thymeleaf.dialect.AdditionalDialect;
@@ -21,7 +19,6 @@ import com.example.core.thymeleaf.expression.Maths;
 import com.google.common.collect.ImmutableMap;
 
 @Configuration
-@EnableWebMvc
 @ConfigurationProperties(prefix = "app")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -40,11 +37,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.beanName();
-    }
-    
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("views/home");

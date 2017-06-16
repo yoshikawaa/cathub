@@ -1,4 +1,4 @@
-package com.example.app.search;
+package com.example.app.search.common;
 
 import com.example.core.validation.constraints.In;
 

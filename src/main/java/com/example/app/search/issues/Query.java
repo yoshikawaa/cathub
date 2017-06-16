@@ -1,4 +1,4 @@
-package com.example.app.search;
+package com.example.app.search.issues;
 
 import com.example.core.helper.annotation.QueryParam;
 import com.example.core.validation.constraints.Either;
@@ -13,8 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Either(value = { "org", "repo", "author", "assignee", "mentions", "commenter", "involves", "reviewedBy",
-        "reviewRequested", "team" }, checkType = CheckType.Empty)
+@Either.List({ @Either(value = { "org", "repo" }, checkType = CheckType.Empty, onlyOne = true),
+        @Either(value = { "org", "repo", "author", "assignee", "mentions", "commenter", "involves", "reviewedBy",
+                "reviewRequested", "team" }, checkType = CheckType.Empty) })
 public class Query {
     // search by user & repository
     @QueryParam(name = "user")

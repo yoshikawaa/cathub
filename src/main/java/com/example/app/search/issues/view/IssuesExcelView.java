@@ -1,4 +1,4 @@
-package com.example.app.search.view;
+package com.example.app.search.issues.view;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +21,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
-import com.example.app.search.entity.Assignee;
-import com.example.app.search.entity.Issue;
-import com.example.app.search.entity.Label;
+import com.example.app.search.issues.entity.Assignee;
+import com.example.app.search.issues.entity.Issue;
+import com.example.app.search.issues.entity.Label;
 
 @Component("issuesExcelView")
 public class IssuesExcelView extends AbstractXlsxView {

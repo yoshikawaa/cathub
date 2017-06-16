@@ -23,6 +23,31 @@ $('input[name="size"]').on('change', function() {
   $(this).closest('.ui.form').addClass("loading");
   $(this).closest('form').submit();
 });
+/* action:search candidates */
+$('.ui.search').search({
+  apiSettings : {
+    url : 'repositories?&in=name&value={query}',
+  },
+  fields : {
+    results : 'items',
+    title : 'full_name'
+  },
+  minCharacters : 3
+});
+// $('.ui.search').search({
+// apiSettings : {
+// url : '/repositories?org={org}&in=name&value={value}'
+// },
+// urlData : {
+// org : $('input[name="org"]').val(),
+// value : $('input[name="value"]').val()
+// },
+// fields : {
+// title : 'name',
+// url : 'htmlUrl'
+// },
+// minCharacters : 3
+// });
 /* action:close message */
 $('.message .close').on('click', function() {
   $(this).closest('.message').transition('fade');

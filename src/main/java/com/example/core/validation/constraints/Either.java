@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.StringUtils;
 
 import com.example.core.validation.constraintvalidators.EitherValidator;
@@ -29,15 +28,15 @@ public @interface Either {
 
     String[] value() default {};
 
-    CheckType checkType()
-
-    default CheckType.Null;
-
+    CheckType checkType() default CheckType.Null;
+    
+    boolean onlyOne() default false;
+    
     @Documented
     @Target({ TYPE, ANNOTATION_TYPE })
     @Retention(RUNTIME)
     @interface List {
-        Required[] value();
+        Either[] value();
     }
 
     public enum CheckType {

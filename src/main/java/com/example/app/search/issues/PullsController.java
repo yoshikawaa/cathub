@@ -1,4 +1,4 @@
-package com.example.app.search;
+package com.example.app.search.issues;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;

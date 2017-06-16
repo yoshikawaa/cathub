@@ -3,6 +3,8 @@ package com.example.core.validation.constraintvalidators;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -18,6 +20,7 @@ public class EitherValidator implements ConstraintValidator<Either, Object> {
 
     private String[] properties;
     private CheckType checkType;
+    private boolean onlyOne;
 
     @Override
     public void initialize(Either constraintAnnotation) {
@@ -26,6 +29,7 @@ public class EitherValidator implements ConstraintValidator<Either, Object> {
         }
         this.properties = constraintAnnotation.value();
         this.checkType = constraintAnnotation.checkType();
+        this.onlyOne = constraintAnnotation.onlyOne();
     }
 
     @Override
@@ -38,12 +42,11 @@ public class EitherValidator implements ConstraintValidator<Either, Object> {
         });
 
         // check properties
-        for (Map.Entry<String, Object> p : propertyValues.entrySet()) {
-            if (!checkType.isXX(p.getValue())) {
-                return true;
-            }
+        Stream<Entry<String, Object>> stream = propertyValues.entrySet().stream();
+        if (onlyOne) {
+            return stream.filter(p -> !checkType.isXX(p.getValue())).count() == 1;
+        } else {
+            return stream.anyMatch(p -> !checkType.isXX(p.getValue()));
         }
-
-        return false;
     }
 }

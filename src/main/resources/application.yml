@@ -7,16 +7,14 @@ server:
   port: 9999
   context-path: /cathub
 
-# thymeleaf settings
+# thymeleaf properties
 spring:
   thymeleaf:
     cache: false
-    excluded-view-names : issuesExcelView
     
 # logging properties
 logging:
   level:
-    org.springframework: WARN
     com.example: DEBUG
 
 # app properties
@@ -28,8 +26,10 @@ app:
 # api properties
 api:
   github:
+    base-uri: "https://api.github.com"
     search:
-      issues: https://api.github.com/search/issues
+      issues: ${api.github.base-uri}/search/issues
+      repositories: ${api.github.base-uri}/search/repositories
       max-page-size: 100
-      limit-element-size: 1000
+      max-element-size: 1000
       
